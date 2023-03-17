@@ -1,8 +1,10 @@
 from pyrogram import client , filters
-from mysql.connector import connection
 import asyncio
 
-
+from plugins.start import *
+from plugins.test import *
+from etc.anti_spam import *
+from etc.db import *
 # Pyrogram Config : 
 
 app = client(
@@ -13,23 +15,29 @@ app = client(
 )
 #=====================================================================
 
-#Connect to MySQL Server : 
-Db = connection.MySQLConnection(
-    host = '127.0.0.1',
-    user = "root",
-    password = "KhodeAmin",
-    database = "reymebot"
-
-
-)
-
-Cursor = Db.cursor() #=========> Thats What We Need In All Of DataBase's Requests
 
 #======================================================================
 
 
-@app.on_message(filters.private | filters.command('start'))
-async def PrivateMessages(Clinet,Update):
-    pass
+@app.on_message(filters.private)
+async def PrivateMessages(client , message):
+    text = message.text.split()
+    commands = {
+        'start': start_test,
+    }
+    try:
+        await commands[text[0].lower()](client, message, text)
+    except:
+        pass
 
 
+@app.on_message(filters.group)
+async def PrivateMessages(client , message):
+    text = message.text.split()
+    commands = {
+        'mute': mute_user,
+    }
+    try:
+        await commands[text[0].lower()](client, message, text)
+    except:
+        pass
