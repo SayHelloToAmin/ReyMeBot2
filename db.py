@@ -45,14 +45,43 @@ def registeruser(NickName,user_id):
 
 
 
-#=================================Count=================================================
+#=================================SHOW SCORE=================================================
 
 #this function only count messages of each user
 
 def counter(user_id):
     db.connect()
-    Cursor.execute("""UPDATE STATUS
-                    SET COUNT = COUNT+1
-                        WHERE userid = %S """,(user_id))
+    Cursor.execute(f"""UPDATE STATUS 
+                    SET SCORE = SCORE + 0.5 , COUNT = COUNT + 1
+                    WHERE USERID = {user_id} """)
     db.commit()
-    db.close()    
+    db.close()  
+
+
+
+
+
+#===================================Get Score====================================
+
+#this functions just return a number 
+
+def givecount(userid): 
+    db.connect()
+    Cursor.execute(f"SELECT SCORE FROM STATUS WHERE USERID = {userid}")
+    Cloud = Cursor.fetchone
+    db.close()
+    return Cloud[0]
+
+
+
+
+#=================================== SET SCORE ============================================
+
+
+# this function will set the new values of score
+
+def setscore(userid , value):
+    db.connect()
+    Cursor.execute("UPDATE STATUS SET SCORE = %s WHERE USERID = %s",(value,userid))
+    db.commit()
+    db.close()

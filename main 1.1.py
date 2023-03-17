@@ -3,6 +3,7 @@ import asyncio
 import db
 from Show.starts import *
 import asyncio
+from etc import Count
 # from etc.anti_spam import *
 
 # Pyrogram Config : 
@@ -36,6 +37,7 @@ async def private_message(client , message):
 
 @app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text)
 async def group_message(client , message):
+    await Count.count(message)
     before_text = message.text.lower()
     text = before_text.split()
     commands = {
