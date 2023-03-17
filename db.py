@@ -1,5 +1,5 @@
 from mysql.connector import connection
-
+from etc import Count
 #Connect to MySQL Server : 
 db = connection.MySQLConnection(
     host = 'localhost',
@@ -43,3 +43,16 @@ def registeruser(NickName,user_id):
         db.close()
         return True
 
+
+
+#=================================Count=================================================
+
+#this function only count messages of each user
+
+def counter(user_id):
+    db.connect()
+    Cursor.execute("""UPDATE STATUS
+                    SET COUNT = COUNT+1
+                        WHERE userid = %S """,(user_id))
+    db.commit()
+    db.close()    
