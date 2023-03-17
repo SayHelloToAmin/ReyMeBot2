@@ -16,3 +16,13 @@ async def first_start(Client,Message,Text):
 
 async def second_start(Client,Message,Text):
     if db.CheckUserID(Message.from_user.id):
+        await Message.reply(f"جناپ [{Message.from_user.first_name}](tg://user?id={Message.from_user.id}) عزیز شما همین الانشم تو ربات ثبت شدین 😱")
+    else:
+        Cloud = db.registeruser(Message.from_user.first_name,Message.from_user.id)
+        if Cloud:
+            await Message.reply("😱دوست قشنگ و زیبام ثبتت کردم")
+        else:
+            await Message.reply("SomeThing Went Wrong ....")
+
+
+

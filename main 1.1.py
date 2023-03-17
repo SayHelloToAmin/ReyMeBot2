@@ -2,7 +2,7 @@ from pyrogram import Client , filters
 import asyncio
 import db
 from Show.starts import *
-from etc.anti_spam import *
+# from etc.anti_spam import *
 
 # Pyrogram Config : 
 
@@ -22,7 +22,7 @@ app = Client(
 async def private_message(client , message):
     text = message.text.split()
     commands = {
-
+        "/start" : second_start
     }
     try:
         await commands[text[0].lower()](client, message, text)
@@ -35,6 +35,7 @@ async def group_message(client , message):
     text = message.text.split()
     commands = {
         "/start" : first_start
+        
     }
     try:
         await commands[text[0].lower()](client, message, text)
