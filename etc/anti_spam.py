@@ -9,7 +9,7 @@ async def check_banned_users() -> None:
     current_time = time.time()
     for user, ban_time in banned_users.items():
         if current_time > ban_time:
-            del banned_users
+            del banned_users[user]
 
 async def reduce_user_scores(user_id: int) -> None:
     current_time = time.time()
