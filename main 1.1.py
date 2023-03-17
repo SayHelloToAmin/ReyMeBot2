@@ -1,10 +1,9 @@
 from pyrogram import client , filters
 import asyncio
-
-from plugins.start import *
-from plugins.test import *
+import db
+from Show.starts import *
 from etc.anti_spam import *
-from etc.db import *
+
 # Pyrogram Config : 
 
 app = client(
@@ -23,7 +22,7 @@ app = client(
 async def private_message(client , message):
     text = message.text.split()
     commands = {
-        'start': start_test,
+
     }
     try:
         await commands[text[0].lower()](client, message, text)
@@ -35,7 +34,7 @@ async def private_message(client , message):
 async def group_message(client , message):
     text = message.text.split()
     commands = {
-        'mute': mute_user,
+
     }
     try:
         await commands[text[0].lower()](client, message, text)
