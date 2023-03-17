@@ -2,7 +2,7 @@ from mysql.connector import connection
 
 #Connect to MySQL Server : 
 db = connection.MySQLConnection(
-    host = '127.0.0.1',
+    host = 'localhost',
     user = "root",
     password = "KhodeAmin",
     database = "reymebot"
@@ -10,8 +10,8 @@ db = connection.MySQLConnection(
 
 )
 
+Cursor = db.cursor()
 db.close()
-
 
 
 
@@ -19,9 +19,8 @@ db.close()
 #====================== Check if User Id is exist in Database=====================
 
 def CheckUserID(userid):
-    Cursor = db.cursor()
     db.connect()
-    Cursor.execute(f"SELECT ID from status WHERE user_id = {userid}")
+    Cursor.execute(f"SELECT USERNAMES from status WHERE userid = {userid}")
     Cloud = Cursor.fetchone()
     if Cloud:
         db.close()
@@ -33,10 +32,9 @@ def CheckUserID(userid):
 #=======================Register User=============================================
 
 def registeruser(NickName,user_id):
-    Cursor = db.cursor()
     db.connect()
     try:
-        Cursor.execute(f"INSERT INTO STATUS (usernames , user_id ) VALUES ({NickName},{user_id})")
+        Cursor.execute("INSERT INTO STATUS (usernames,userid,count) VALUES (%s , %s , %s)" , (NickName,user_id , 0))
         db.commit()
     except:
         db.close()

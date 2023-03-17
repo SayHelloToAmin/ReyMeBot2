@@ -15,14 +15,14 @@ async def first_start(Client,Message,Text):
 # Handle /start In Bot Pv (Register User Or Not If he is already registered)
 
 async def second_start(Client,Message,Text):
+    print(Message.from_user.id)
     if db.CheckUserID(Message.from_user.id):
-        await Message.reply(f"جناپ [{Message.from_user.first_name}](tg://user?id={Message.from_user.id}) عزیز شما همین الانشم تو ربات ثبت شدین 😱")
+        await Client.send_message(chat_id=Message.from_user.id,text=f"جناپ [{Message.from_user.first_name}](tg://user?id={Message.from_user.id}) عزیز شما همین الانشم تو ربات ثبت شدین 😱")
     else:
         Cloud = db.registeruser(Message.from_user.first_name,Message.from_user.id)
         if Cloud:
-            await Message.reply("😱دوست قشنگ و زیبام ثبتت کردم")
+            await Client.send_message(chat_id=Message.from_user.id,text="😱دوست قشنگ و زیبام ثبتت کردم")
         else:
-            await Message.reply("SomeThing Went Wrong ....")
-
+            await Client.send_message(chat_id=Message.from_user.id,text="Something Went Wrong . . . ")
 
 

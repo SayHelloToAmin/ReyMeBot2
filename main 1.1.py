@@ -20,11 +20,14 @@ app = Client(
 
 @app.on_message(filters.private)
 async def private_message(client , message):
-    text = message.text.split()
+    before_text = message.text.lower()
+    text = before_text.split()
     commands = {
-        "/start" : second_start
+        "/start" : second_start,
+        "/start@reymebot" : second_start
     }
     try:
+        print("injaaaa")
         await commands[text[0].lower()](client, message, text)
     except:
         pass
@@ -32,9 +35,11 @@ async def private_message(client , message):
 
 @app.on_message(filters.group & ~filters.channel & ~filters.bot)
 async def group_message(client , message):
-    text = message.text.split()
+    before_text = message.text.lower()
+    text = before_text.split()
     commands = {
-        "/start" : first_start
+        "/start" : first_start,
+        "/start@reymebot" : first_start
         
     }
     try:
