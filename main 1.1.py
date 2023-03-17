@@ -34,7 +34,7 @@ async def private_message(client , message):
 async def group_message(client , message):
     text = message.text.split()
     commands = {
-        "/start" : FIrst_STart
+        "/start" : first_start
     }
     try:
         await commands[text[0].lower()](client, message, text)

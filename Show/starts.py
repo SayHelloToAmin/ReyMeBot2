@@ -6,6 +6,7 @@ import asyncio
 
 async def FIrst_STart(Client,Message,Text):
     if db.CheckUserID(Message.from_user.id):
-        await Message.reply(f"جناپ [{Message.from_user.first_name}](tg://user?id={Message.from_user.id}) عزیز شما همین الانشم تو ربات ثبت شدین 😱")
+        tag = f'[{Message.from_user.first_name}](tg://user?id={Message.from_user.id})'
+        await Message.reply(f"جناپ {tag} عزیز شما همین الانشم تو ربات ثبت شدین 😱")
     else:
-        await Message.reply(f"😍عزیز برای ثبت اکانتت باید رباتو استارت کنی [{Message.from_user.first_name}](tg://user?id={Message.from_user.id})")
+        await Message.reply(f"{tag} 😍عزیز برای ثبت اکانتت باید رباتو استارت کنی ")
