@@ -1,4 +1,4 @@
-from pyrogram import client , filters
+from pyrogram import Client , filters
 import asyncio
 import db
 from Show.starts import *
@@ -6,7 +6,7 @@ from etc.anti_spam import *
 
 # Pyrogram Config : 
 
-app = client(
+app = Client(
     'Reyme',
     api_id=6703845,
     api_hash="3eac821a6d1e0b0e2969ae0ad2f970ea",
@@ -30,7 +30,7 @@ async def private_message(client , message):
         pass
 
 
-@app.on_message(filters.group)
+@app.on_message(filters.group & ~filters.channel & ~filters.bot)
 async def group_message(client , message):
     text = message.text.split()
     commands = {
@@ -40,3 +40,9 @@ async def group_message(client , message):
         await commands[text[0].lower()](client, message, text)
     except:
         pass
+
+
+
+
+
+app.run()
