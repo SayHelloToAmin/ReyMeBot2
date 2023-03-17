@@ -20,7 +20,7 @@ app = client(
 
 
 @app.on_message(filters.private)
-async def PrivateMessages(client , message):
+async def private_message(client , message):
     text = message.text.split()
     commands = {
         'start': start_test,
@@ -32,7 +32,7 @@ async def PrivateMessages(client , message):
 
 
 @app.on_message(filters.group)
-async def PrivateMessages(client , message):
+async def group_message(client , message):
     text = message.text.split()
     commands = {
         'mute': mute_user,
