@@ -22,11 +22,11 @@ db.close()
 
 def CheckUserID(userid):
     db.connect()
-    try:
-        Cursor.execute(f"SELECT id from status WHERE user_id = {userid}")
-    except:
-        db.close()
-        return False
-    else:
+    Cursor.execute(f"SELECT id from status WHERE user_id = {userid}")
+    Cloud = Cursor.fetchone()
+    if Cloud:
         db.close()
         return True
+    else:
+        db.close()
+        return False
