@@ -29,7 +29,6 @@ async def private_message(client , message):
         "/start@reymebot" : second_start
     }
     try:
-        print("injaaaa")
         await commands[text[0].lower()](client, message, text)
     except:
         pass

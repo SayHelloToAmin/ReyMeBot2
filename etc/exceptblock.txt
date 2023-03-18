@@ -1,0 +1,21 @@
+import this everytime : 
+
+
+
+import traceback
+from etc import reporter
+
+
+
+
+
+
+# paste those in except block : 
+
+
+
+
+
+tb = e.__traceback__
+
+reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name)

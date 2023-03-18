@@ -1,5 +1,6 @@
 from mysql.connector import connection
 from etc import Count
+from datetime import datetime
 #Connect to MySQL Server : 
 db = connection.MySQLConnection(
     host = 'localhost',
@@ -85,3 +86,20 @@ def setscore(userid , value):
     Cursor.execute("UPDATE STATUS SET SCORE = %s WHERE USERID = %s",(value,userid))
     db.commit()
     db.close()
+
+
+
+
+#======================================Error recorder===========================================
+
+
+#this function can record the randomly errors 
+
+def error_reporter(userid , description):
+    db.connect()
+    current_datetime = datetime.now()
+    current_datetime_formatted = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
+    sql = "INSERT INTO error (Describtion , userid , date) VALUES (%s , %s)"
+    val = (description,userid,current_datetime_formatted)
+    Cursor.execute(sql, val)
+    db.commit()

@@ -13,7 +13,7 @@ async def quest_one(client):
     num_two = random.randint(1, 200)
     math = random.choice(['+', '-', '*'])
     answer = eval(f'{num_one}{math}{num_two}')
-    score = random.randint(500, 2000)
+    score = random.randint(50, 100)
     task_math[answer] = score
 
     text = '''پاسخ محاسبه ({num_one} {math} {num_two}) رو بفرستین تا ({score}) امتیاز برنده شید 😇
@@ -22,7 +22,7 @@ async def quest_one(client):
 
 
 async def quest_two(client):
-    score = random.randint(500, 2000)
+    score = random.randint(10, 30)
     task_id = random.randint(500, 2000)
     task_click[task_id] = score
     text = f'برای برنده شدن امتیاز({score}) دکمه زیرو بزن 😇'
