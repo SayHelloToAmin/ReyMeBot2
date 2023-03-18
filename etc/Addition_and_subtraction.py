@@ -4,7 +4,7 @@ import db
 # =============Subtraction==============
 
 async def subtraction(user_id: int, value: int):
-    Cloud = db.givecount(user_id)
+    Cloud = db.give_score(user_id)
     if Cloud - value < 0:
         db.setscore(user_id, 0)
     else:
@@ -14,5 +14,5 @@ async def subtraction(user_id: int, value: int):
 # ===============Addiction=====================
 
 async def addiction(user_id: int, value: int):
-    Cloud = db.givecount(user_id)
+    Cloud = db.give_score(user_id)
     db.setscore(user_id, Cloud + value)

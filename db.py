@@ -62,10 +62,10 @@ def counter(user_id):
 
 # this functions just return a number
 
-def givecount(userid):
+def give_score(userid):
     db.connect()
     Cursor.execute(f"SELECT SCORE FROM STATUS WHERE USERID = {userid}")
-    Cloud = Cursor.fetchone
+    Cloud = Cursor.fetchone()
     db.close()
     return Cloud[0]
 

@@ -3,10 +3,11 @@ import asyncio
 import db
 from Show.starts import *
 import asyncio
+
 from etc import Count
 from etc.anti_spam import *
 from etc.random_quest import *
-
+from etc.run_all_tasks import scheduler
 # Pyrogram Config : 
 
 app = Client(
@@ -40,10 +41,10 @@ async def check_banned_user(_, __, message):
     return True
 
 
-spam = filters.create(check_banned_user)
+spam_filter = filters.create(check_banned_user)
 
 
-@app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & filters.spam)
+@app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter)
 async def group_message(client, message):
     await Count.count(message)
     await add_user(message.from_user.id)
@@ -57,11 +58,11 @@ async def group_message(client, message):
     }
     try:
         await commands[text[0].lower()](client, message, text)
-    except:
-        pass
+    except Exception as e:
+        print(e)
 
 # For random quests which need buttons
-@app.on_callback_query()
+@app.on_callback_query(spam_filter)
 async def check_quest_answer(client, callback_query):
     data = callback_query.data.split('-')
     commands = {
@@ -69,9 +70,11 @@ async def check_quest_answer(client, callback_query):
     }
     try:
         await commands[data[0]](client, callback_query, data)
-    except:
-        pass
+    except Exception as e:
+        print(e)
 
 
-
+# temp
+# quests
+scheduler.add_job(start_random_task, "interval", minutes=60, args=[app])
 app.run()
