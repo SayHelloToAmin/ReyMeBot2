@@ -1,13 +1,14 @@
-from mysql.connector import connection
+import mysql.connector
 from etc import Count
 from datetime import datetime
 
 # Connect to MySQL Server :
-db = connection.MySQLConnection(
+db = mysql.connector.connect(
     host='localhost',
     user="root",
     password="0918",
-    database="reymebot"
+    database="database",
+    # auth_plugin='mysql_native_password'
 
 )
 
