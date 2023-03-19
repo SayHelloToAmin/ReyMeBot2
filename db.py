@@ -6,8 +6,8 @@ from datetime import datetime
 db = mysql.connector.connect(
     host='localhost',
     user="root",
-    password="0918",
-    database="database",
+    password="KhodeAmin",
+    database="reymebot",
     # auth_plugin='mysql_native_password'
 
 )
@@ -45,7 +45,7 @@ def registeruser(NickName, user_id):
         return True
 
 
-# =================================SHOW SCORE=================================================
+# =================================Count Messages=================================================
 
 # this function only count messages of each user
 

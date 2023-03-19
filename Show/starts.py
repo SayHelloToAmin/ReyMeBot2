@@ -13,7 +13,7 @@ async def first_start(Client,Message,Text):
             await Message.reply(f"😍عزیز برای ثبت اکانتت باید رباتو استارت کنی [{Message.from_user.first_name}](tg://user?id={Message.from_user.id})")
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name)
+        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name,Message.from_user.id)
 
 
 # Handle /start In Bot Pv (Register User Or Not If he is already registered)
@@ -30,5 +30,5 @@ async def second_start(Client,Message,Text):
                 await Client.send_message(chat_id=Message.from_user.id,text="Something Went Wrong . . . ")
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name)
+        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name,Message.from_user.id)
 

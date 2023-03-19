@@ -4,7 +4,7 @@ import db
 from Show.starts import *
 import asyncio
 
-from etc import Count
+from etc.Count import Shomarande
 from etc.anti_spam import *
 from etc.random_quest import *
 from etc.run_all_tasks import scheduler
@@ -21,6 +21,9 @@ app = Client(
 # =====================================================================
 
 
+
+
+
 @app.on_message(filters.private)
 async def private_message(client, message):
     text = message.text.split()
@@ -34,6 +37,12 @@ async def private_message(client, message):
         pass
 
 
+
+
+
+
+
+
 # custom filter to check if user is banned
 async def check_banned_user(_, __, message):
     if message.from_user.id in banned_users.keys():
@@ -44,11 +53,14 @@ async def check_banned_user(_, __, message):
 spam_filter = filters.create(check_banned_user)
 
 
+
+
+
+
 @app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter)
 async def group_message(client, message):
-    await Count.count(message)
+    await Shomarande(message)
     await add_user(message.from_user.id)
-
     text = message.text.split()
     commands = {
         "/start": first_start,
@@ -60,6 +72,12 @@ async def group_message(client, message):
         await commands[text[0].lower()](client, message, text)
     except Exception as e:
         print(e)
+
+
+
+
+
+
 
 # For random quests which need buttons
 @app.on_callback_query(spam_filter)
