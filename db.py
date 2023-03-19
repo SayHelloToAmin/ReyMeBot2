@@ -13,49 +13,45 @@ db = mysql.connector.connect(
 )
 
 Cursor = db.cursor()
-db.close()
+
 
 
 # ====================== Check if User Id is exist in Database=====================
 
 def CheckUserID(userid):
-    db.connect()
     Cursor.execute(f"SELECT USERNAMES from status WHERE userid = {userid}")
     Cloud = Cursor.fetchone()
     if Cloud:
-        db.close()
         return True
     else:
-        db.close()
         return False
 
 
 # =======================Register User=============================================
 
 def registeruser(NickName, user_id):
-    db.connect()
     try:
-        Cursor.execute("INSERT INTO STATUS (usernames,userid,count) VALUES (%s , %s , %s)", (NickName, user_id, 0))
+        Cursor.execute("INSERT INTO status (usernames,userid,count) VALUES (%s , %s , %s)", (NickName, user_id, 0))
+        db.commit()
+        Cursor.execute("INSERT INTO level (username , userid) VALUES (%s , %s)",(NickName,user_id))
         db.commit()
     except:
-        db.close()
         return False
     else:
-        db.close()
         return True
 
 
-# =================================Count Messages=================================================
+# =================================Count Messages and XP================================================
 
-# this function only count messages of each user
+# this function only count messages of each user and add XP
 
 def counter(user_id):
-    db.connect()
-    Cursor.execute(f"""UPDATE STATUS 
+    Cursor.execute(f"""UPDATE status 
                     SET SCORE = SCORE + 0.25 , COUNT = COUNT + 1
                     WHERE USERID = {user_id} """)
     db.commit()
-    db.close()
+    Cursor.execute(f"""UPDATE level 
+                    SET XP = XP + 1 WHERE userid = {user_id} """)
 
 
 # ===================================Get Score====================================
@@ -63,10 +59,10 @@ def counter(user_id):
 # this functions just return a number
 
 def give_score(userid):
-    db.connect()
-    Cursor.execute(f"SELECT SCORE FROM STATUS WHERE USERID = {userid}")
+
+    Cursor.execute(f"SELECT SCORE FROM status WHERE USERID = {userid}")
     Cloud = Cursor.fetchone()
-    db.close()
+
     return Cloud[0]
 
 
@@ -76,10 +72,10 @@ def give_score(userid):
 # this function will set the new values of score
 
 def setscore(userid, value):
-    db.connect()
-    Cursor.execute("UPDATE STATUS SET SCORE = %s WHERE USERID = %s", (value, userid))
+
+    Cursor.execute("UPDATE status SET SCORE = %s WHERE USERID = %s", (value, userid))
     db.commit()
-    db.close()
+
 
 
 # ======================================Error recorder===========================================
@@ -88,14 +84,14 @@ def setscore(userid, value):
 # this function can record the randomly errors
 
 def error_reporter(userid, description):
-    db.connect()
+
     current_datetime = datetime.now()
     current_datetime_formatted = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
-    sql = "INSERT INTO error (Describtion , userid , date) VALUES (%s , %s)"
+    sql = "INSERT INTO error (Describtion , userid , date) VALUES (%s , %s , %s)"
     val = (description, userid, current_datetime_formatted)
     Cursor.execute(sql, val)
     db.commit()
-    db.close()
+
 
 
 
@@ -105,12 +101,34 @@ def error_reporter(userid, description):
 # this function return True if userid = ADMIN
 
 def checkrank(userid):
-    db.connect()
-    Cursor.execute(f"SELECT RANKED FROM STATUS WHERE USERID = {userid}")
+
+    Cursor.execute(f"SELECT RANKED FROM status WHERE USERID = {userid}")
     Cloud = Cursor.fetchone()
     if Cloud[0] == "ADMIN":
-        db.close()
+
         return True
     else:
-        db.close()
+
         return False
+
+
+#===============================================get level================================================
+
+#this function return a number wich that level of user
+
+def getlevel(userid):
+    Cursor.execute(f"SELECT level FROM level WHERE userid = {userid}")
+    Cloud = Cursor.fetchone()
+    return Cloud[0]
+
+
+
+#================================================get xp and xp needed====================================================
+
+#this function weill return the xp value
+
+def getxp(userid):
+    Cursor.execute(f"SELECT xp,needed_xp FROM level WHERE userid = {userid}")
+    Cloud = Cursor.fetchall()
+    #return a tuple
+    return Cloud

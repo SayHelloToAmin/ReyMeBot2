@@ -25,7 +25,7 @@ async def second_start(Client,Message,Text):
         else:
             Cloud = db.registeruser(Message.from_user.first_name,Message.from_user.id)
             if Cloud:
-                await Client.send_message(chat_id=Message.from_user.id,text="😱دوست قشنگ و زیبام ثبتت کردم")
+                await Client.send_message(chat_id=Message.from_user.id,text=""" ثبتت کردم 🙊 50 امتیاز برای شروع زدم توت""")
             else:
                 await Client.send_message(chat_id=Message.from_user.id,text="Something Went Wrong . . . ")
     except Exception as e:

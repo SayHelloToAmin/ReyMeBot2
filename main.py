@@ -7,7 +7,7 @@ from etc.Count import Counter1
 from etc.anti_spam import *
 
 from Show.showscore import scoreshower
-
+from Show.mylevel import mylevel
 from etc.random_quest import *
 from db import CheckUserID
 from etc.run_all_tasks import scheduler
@@ -18,29 +18,29 @@ app = Client(
     'Reyme',
     api_id=6703845,
     api_hash="3eac821a6d1e0b0e2969ae0ad2f970ea",
-    bot_token="1812849282:AAGZBXBy97vlj_z5gqu9ENxsl1qa8qCd6v4"
+    bot_token="1949862634:AAHlTHP-tNqz_DKK72aThdcIc48jlosg46M"
 )
 
 
 # =====================================================================
 
 # custom filter to check if user in not registered
-async def check_reg(_, __, message):
-    text = message.text.split()[0].lower()
-    if text == "/start" or text == "/start@reymebot":
-        return True
-    else:
-        if CheckUserID(message.from_user.id):
-            return True
-        else:
-            return False
+# async def check_reg(_, __, message):
+#     text = message.text.split()[0].lower()
+#     if text == "/start" or text == "/start@reymebot":
+#         return True
+#     else:
+#         if CheckUserID(message.from_user.id):
+#             return True
+#         else:
+#             return False
 
 
-check_register = filters.create(check_reg)
+# check_register = filters.create(check_reg)
 
 
 
-@app.on_message(filters.private & check_register)
+@app.on_message(filters.private )
 async def private_message(client, message):
     text = message.text.split()
     commands = {
@@ -70,7 +70,7 @@ spam_filter = filters.create(check_banned_user)
 
 
 
-@app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter & check_register)
+@app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter )
 async def group_message(client, message):
     await Counter1(message)
     await add_user(message.from_user.id)
@@ -80,7 +80,9 @@ async def group_message(client, message):
         "/start@reymebot": first_start,
         'جواب': check_math_quest,
         "/myscore" : scoreshower,
-        "/myscore@ReyMeBot" : scoreshower
+        "/myscore@reymebot" : scoreshower,
+        "/mylevel" : mylevel,
+        "/mylevel@reymebot" : mylevel
 
     }
     try:
@@ -95,7 +97,7 @@ async def group_message(client, message):
 
 
 # For random quests which need buttons
-@app.on_callback_query(spam_filter & check_register)
+@app.on_callback_query(spam_filter )
 async def check_quest_answer(client, callback_query):
     data = callback_query.data.split('-')
     commands = {
