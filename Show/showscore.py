@@ -1,23 +1,22 @@
 import db
 
-
 import traceback
 from etc import reporter
 
 
-async def scoreshower(Client,Message,text):
+async def score_shower(Client, Message, text):
     Cloud = Message.from_user.id
     Cloud2 = None
-    #check register
+    # check register
     if db.CheckUserID(Cloud):
-        #check mikone message reply ya sade
-        if Message.reply_to_message :
+        # check mikone message reply ya sade
+        if Message.reply_to_message:
             Cloud2 = Message.reply_to_message.from_user.id
         else:
             pass
-        #check mikone admin ino ferestade ya na
+        # check mikone admin ino ferestade ya na
         if db.checkrank(Cloud):
-            #check mikone reply bood ya na 
+            # check mikone reply bood ya na
             if Cloud2 != None:
                 if db.CheckUserID(Cloud2):
                     Cloud3 = db.give_score(Cloud2)

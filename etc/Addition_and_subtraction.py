@@ -3,7 +3,7 @@ import db
 
 # =============Subtraction==============
 
-async def subtraction(user_id: int, value: int):
+async def subtraction(user_id: int, value: float):
     Cloud = db.give_score(user_id)
     if Cloud - value < 0:
         db.setscore(user_id, 0)

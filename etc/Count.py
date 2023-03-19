@@ -2,10 +2,11 @@ import db
 import traceback
 from .reporter import exceptf
 
-#============Count Messages============
+
+# ============Count Messages============
 
 
-#this function will check if user are registered , count and add his chats.
+# this function will check if user are registered , count and add his chats.
 
 async def Counter1(Message):
     try:
@@ -15,4 +16,4 @@ async def Counter1(Message):
             pass
     except Exception as e:
         tb = e.__traceback__
-        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name , Message.from_user.id)
+        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name, Message.from_user.id)

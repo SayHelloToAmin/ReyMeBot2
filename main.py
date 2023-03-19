@@ -6,7 +6,7 @@ from etc.Count import Counter1
 
 from etc.anti_spam import *
 
-from Show.showscore import scoreshower
+from Show.showscore import score_shower
 from Show.mylevel import mylevel
 from etc.random_quest import *
 from db import CheckUserID
@@ -25,7 +25,7 @@ app = Client(
 # =====================================================================
 
 # custom filter to check if user in not registered
-# async def check_reg(_, __, message):
+# async def check_reg_status(_, client, message):
 #     text = message.text.split()[0].lower()
 #     if text == "/start" or text == "/start@reymebot":
 #         return True
@@ -33,27 +33,21 @@ app = Client(
 #         if CheckUserID(message.from_user.id):
 #             return True
 #         else:
+#             await client.send_message(message.chat.id, 'ثبت نام نکردی')
 #             return False
 
+# async def check_reg_status_temp(client, message):
+#     text = message.text.split()[0].lower()
+#     if text == "/start" or text == "/start@reymebot":
+#         return True
+#     else:
+#         if CheckUserID(message.from_user.id):
+#             return True
+#         else:
+#             await client.send_message(message.chat.id, 'ثبت نام نکردی')
+#             return False
 
-# check_register = filters.create(check_reg)
-
-
-
-@app.on_message(filters.private )
-async def private_message(client, message):
-    text = message.text.split()
-    commands = {
-        "/start": second_start,
-        "/start@reymebot": second_start
-    }
-    try:
-        await commands[text[0].lower()](client, message, text)
-    except:
-        pass
-
-
-
+# check_register = filters.create(check_reg_status)
 
 
 # custom filter to check if user is banned
@@ -66,11 +60,7 @@ async def check_banned_user(_, __, message):
 spam_filter = filters.create(check_banned_user)
 
 
-
-
-
-
-@app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter )
+@app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter)
 async def group_message(client, message):
     await Counter1(message)
     await add_user(message.from_user.id)
@@ -79,10 +69,10 @@ async def group_message(client, message):
         "/start": first_start,
         "/start@reymebot": first_start,
         'جواب': check_math_quest,
-        "/myscore" : scoreshower,
-        "/myscore@reymebot" : scoreshower,
-        "/mylevel" : mylevel,
-        "/mylevel@reymebot" : mylevel
+        "/myscore": score_shower,
+        "/myscore@reymebot": score_shower,
+        "/mylevel": mylevel,
+        "/mylevel@reymebot": mylevel
 
     }
     try:
@@ -92,6 +82,18 @@ async def group_message(client, message):
 
 
 
+# private on message
+@app.on_message(filters.private)
+async def private_message(client, message):
+    text = message.text.split()
+    commands = {
+        "/start": second_start,
+        "/start@reymebot": second_start
+    }
+    try:
+        await commands[text[0].lower()](client, message, text)
+    except:
+        pass
 
 
 
@@ -111,5 +113,6 @@ async def check_quest_answer(client, callback_query):
 
 # temp
 # quests
-scheduler.add_job(start_random_task, "interval", minutes=60, args=[app])
+scheduler.add_job(start_random_task, "interval", minutes=30, args=[app])
+scheduler.add_job(check_spam, "interval", seconds=5, args=[app])
 app.run()
