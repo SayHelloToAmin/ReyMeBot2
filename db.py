@@ -1,4 +1,5 @@
 import mysql.connector
+
 from datetime import datetime
 
 # Connect to MySQL Server :

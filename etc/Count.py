@@ -1,13 +1,13 @@
 import db
 import traceback
-import reporter
+from etc.reporter import exceptf
 
 #============Count Messages============
 
 
 #this function will check if user are registered , count and add his chats.
 
-async def ccc(Message):
+async def Counter1(Message):
     try:
         if db.CheckUserID(Message.from_user.id):
             db.counter(Message.from_user.id)
@@ -15,4 +15,4 @@ async def ccc(Message):
             pass
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name , Message.from_user.id)
+        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name , Message.from_user.id)

@@ -2,8 +2,7 @@ from pyrogram import Client, filters
 
 from Show.starts import *
 
-
-from etc.Count import *
+from etc.Count import Counter1
 
 from etc.anti_spam import *
 
@@ -62,7 +61,7 @@ spam_filter = filters.create(check_banned_user)
 
 @app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter)
 async def group_message(client, message):
-    await ccc(message)
+    await Counter1(message)
     await add_user(message.from_user.id)
     text = message.text.split()
     commands = {
