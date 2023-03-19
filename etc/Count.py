@@ -1,6 +1,6 @@
 import db
 import traceback
-from etc.reporter import exceptf
+from .reporter import exceptf
 
 #============Count Messages============
 

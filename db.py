@@ -52,7 +52,7 @@ def registeruser(NickName, user_id):
 def counter(user_id):
     db.connect()
     Cursor.execute(f"""UPDATE STATUS 
-                    SET SCORE = SCORE + 0.5 , COUNT = COUNT + 1
+                    SET SCORE = SCORE + 0.25 , COUNT = COUNT + 1
                     WHERE USERID = {user_id} """)
     db.commit()
     db.close()
@@ -95,3 +95,22 @@ def error_reporter(userid, description):
     val = (description, userid, current_datetime_formatted)
     Cursor.execute(sql, val)
     db.commit()
+    db.close()
+
+
+
+#========================================Rank=======================================================
+
+
+# this function return True if userid = ADMIN
+
+def checkrank(userid):
+    db.connect()
+    Cursor.execute(f"SELECT RANKED FROM STATUS WHERE USERID = {userid}")
+    Cloud = Cursor.fetchone()
+    if Cloud[0] == "ADMIN":
+        db.close()
+        return True
+    else:
+        db.close()
+        return False

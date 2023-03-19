@@ -6,8 +6,10 @@ from etc.Count import Counter1
 
 from etc.anti_spam import *
 
-from etc.random_quest import *
+from Show.showscore import scoreshower
 
+from etc.random_quest import *
+from db import CheckUserID
 from etc.run_all_tasks import scheduler
 
 # Pyrogram Config : 
@@ -22,11 +24,23 @@ app = Client(
 
 # =====================================================================
 
+# custom filter to check if user in not registered
+async def check_reg(_, __, message):
+    text = message.text.split()[0].lower()
+    if text == "/start" or text == "/start@reymebot":
+        return True
+    else:
+        if CheckUserID(message.from_user.id):
+            return True
+        else:
+            return False
+
+
+check_register = filters.create(check_reg)
 
 
 
-
-@app.on_message(filters.private)
+@app.on_message(filters.private & check_register)
 async def private_message(client, message):
     text = message.text.split()
     commands = {
@@ -37,9 +51,6 @@ async def private_message(client, message):
         await commands[text[0].lower()](client, message, text)
     except:
         pass
-
-
-
 
 
 
@@ -59,7 +70,7 @@ spam_filter = filters.create(check_banned_user)
 
 
 
-@app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter)
+@app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter & check_register)
 async def group_message(client, message):
     await Counter1(message)
     await add_user(message.from_user.id)
@@ -68,6 +79,8 @@ async def group_message(client, message):
         "/start": first_start,
         "/start@reymebot": first_start,
         'جواب': check_math_quest,
+        "/myscore" : scoreshower,
+        "/myscore@ReyMeBot" : scoreshower
 
     }
     try:
@@ -82,7 +95,7 @@ async def group_message(client, message):
 
 
 # For random quests which need buttons
-@app.on_callback_query(spam_filter)
+@app.on_callback_query(spam_filter & check_register)
 async def check_quest_answer(client, callback_query):
     data = callback_query.data.split('-')
     commands = {
