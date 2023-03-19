@@ -1,5 +1,4 @@
 import mysql.connector
-from etc import Count
 from datetime import datetime
 
 # Connect to MySQL Server :

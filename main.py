@@ -1,13 +1,16 @@
 from pyrogram import Client, filters
-import asyncio
-import db
-from Show.starts import *
-import asyncio
 
-from etc.Count import Shomarande
+from Show.starts import *
+
+
+from etc.Count import *
+
 from etc.anti_spam import *
+
 from etc.random_quest import *
+
 from etc.run_all_tasks import scheduler
+
 # Pyrogram Config : 
 
 app = Client(
@@ -59,7 +62,7 @@ spam_filter = filters.create(check_banned_user)
 
 @app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter)
 async def group_message(client, message):
-    await Shomarande(message)
+    await ccc(message)
     await add_user(message.from_user.id)
     text = message.text.split()
     commands = {

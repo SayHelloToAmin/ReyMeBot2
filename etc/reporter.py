@@ -1,6 +1,6 @@
 import db
 import asyncio
-import main
+
 
 
 

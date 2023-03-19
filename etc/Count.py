@@ -1,14 +1,13 @@
 import db
-import asyncio
 import traceback
-from etc import reporter
+import reporter
 
 #============Count Messages============
 
 
 #this function will check if user are registered , count and add his chats.
 
-async def Shomarande(Message):
+async def ccc(Message):
     try:
         if db.CheckUserID(Message.from_user.id):
             db.counter(Message.from_user.id)
