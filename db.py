@@ -6,8 +6,8 @@ from datetime import datetime
 db = mysql.connector.connect(
     host='localhost',
     user="root",
-    password="0918",
-    database="database",
+    password="KhodeAmin",
+    database="reymebot",
     # auth_plugin='mysql_native_password'
 
 )
@@ -101,14 +101,11 @@ def error_reporter(userid, description):
 # this function return True if userid = ADMIN
 
 def checkrank(userid):
-
     Cursor.execute(f"SELECT RANKED FROM status WHERE USERID = {userid}")
     Cloud = Cursor.fetchone()
     if Cloud[0] == "ADMIN":
-
         return True
     else:
-
         return False
 
 
@@ -131,4 +128,4 @@ def getxp(userid):
     Cursor.execute(f"SELECT xp,needed_xp FROM level WHERE userid = {userid}")
     Cloud = Cursor.fetchall()
     #return a tuple
-    return Cloud
+    return Cloud[0]

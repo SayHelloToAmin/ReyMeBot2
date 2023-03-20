@@ -76,10 +76,15 @@ async def group_message(client, message):
 
     }
     try:
-        await commands[text[0].lower()](client, message, text)
+        is_reg = CheckUserID(message.from_user.id)
+        if text[0] in commands.keys() and not is_reg:
+            reg_text = f"""😱| [{message.from_user.first_name}](tg://user?id={message.from_user.id}) چاقال 
+                                        تو هنوز تو بات ثبت نشدی ! استارتش کون دیگه"""
+            await message.reply(reg_text)
+        else:
+            await commands[text[0].lower()](client, message, text)
     except Exception as e:
         print(e)
-
 
 
 # private on message
@@ -96,23 +101,27 @@ async def private_message(client, message):
         pass
 
 
-
-
 # For random quests which need buttons
-@app.on_callback_query(spam_filter )
+@app.on_callback_query(spam_filter)
 async def check_quest_answer(client, callback_query):
     data = callback_query.data.split('-')
     commands = {
         'click': check_click_quest,
     }
     try:
-        await commands[data[0]](client, callback_query, data)
+        is_reg = CheckUserID(callback_query.from_user.id)
+        if data[0] in commands.keys() and not is_reg:
+            reg_text = f"""😱| {callback_query.from_user.first_name} چاقال 
+                                                   تو هنوز تو بات ثبت نشدی ! استارتش کون دیگه"""
+            await callback_query.answer(reg_text, show_alert=True)
+        else:
+            await commands[data[0]](client, callback_query, data)
     except Exception as e:
         print(e)
 
 
 # temp
 # quests
-scheduler.add_job(start_random_task, "interval", minutes=30, args=[app])
+scheduler.add_job(start_random_task, "interval", minutes=20, args=[app])
 scheduler.add_job(check_spam, "interval", seconds=5, args=[app])
 app.run()

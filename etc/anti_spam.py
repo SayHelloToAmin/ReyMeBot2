@@ -19,7 +19,7 @@ async def check_banned_users() -> None:
 # if user recognized az spammer score will be reduced
 async def reduce_user_scores(user_id: int) -> float:
     current_time = time.time()
-    banned_users[user_id] = current_time + 10 * 60
+    banned_users[user_id] = current_time + 600
     count_user_messages = len(user_dict[user_id])
     score_to_reduce = count_user_messages * 0.45
     await subtraction(user_id, score_to_reduce)
@@ -48,10 +48,10 @@ async def check_spam(client) -> None:
 
 # with every user text, message date will be saved
 async def add_user(user_id: int) -> None:
-    is_reg = await check_user_reg(user_id)
-    if not is_reg:
-        pass
-    elif user_id in user_dict.keys():
+    # is_reg = await check_user_reg(user_id)
+    # if not is_reg:
+    #     pass
+    if user_id in user_dict.keys():
         user_dict[user_id].append(time.time())
     else:
         user_dict[user_id] = [time.time()]

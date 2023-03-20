@@ -5,4 +5,3 @@ async def check_user_reg(user_id, client=None, message=None):
     if is_registered:
         return True
     return False
-

@@ -25,7 +25,11 @@ async def second_start(Client,Message,Text):
         else:
             Cloud = db.registeruser(Message.from_user.first_name,Message.from_user.id)
             if Cloud:
-                await Client.send_message(chat_id=Message.from_user.id,text=""" ثبتت کردم 🙊 50 امتیاز برای شروع زدم توت""")
+                await Client.send_message(chat_id=Message.from_user.id,text="""✅ | ببین چاقال تو همین الان تو بات ثبت شدی و این به چه معنیه ؟ ☇
+〔از همین لحظه شما با تمام شرایط و قوانین موافقت کردید و مجاز به بن کردن , میوت و سایر اکشن های ربات روی افراد ثبت شده در ربات هستید
+  و همچنین حق هیچگونه اعتراض به بن شدن و... توسط بقیه پلیر ها ندارید!〕 
+
+ ❤️‍🔥| لازم به ذکره که هیچ راه برگشتی نیست پس شل کن """)
             else:
                 await Client.send_message(chat_id=Message.from_user.id,text="Something Went Wrong . . . ")
     except Exception as e:

@@ -45,11 +45,11 @@ async def quest_click(client):
 # ================== check asnwers ========================
 
 async def check_click_quest(client, callback_query, data):
-    is_reg = await check_user_reg(callback_query.from_user.id)
-    if not is_reg:
-        reg_text = f"😱| {callback_query.from_user.first_name} چاقال هنوز ثبت نام نکرده ..."
-        await client.send_message(callback_query.message.chat.id, reg_text)
-    elif data[1] in task_click.keys():
+    # is_reg = await check_user_reg(callback_query.from_user.id)
+    # if not is_reg:
+    #     reg_text = f"😱| {callback_query.from_user.first_name} چاقال هنوز ثبت نام نکرده ..."
+    #     await client.send_message(callback_query.message.chat.id, reg_text)
+    if data[1] in task_click.keys():
         task_id = data[1]
         score = task_click[task_id][0]
         message_id = task_click[task_id][1]
@@ -62,11 +62,11 @@ async def check_click_quest(client, callback_query, data):
                                   f"🤡🏆 ¦ خایمال {first_name} انگار زودتر از بقیه مالیدیش و {score} امتیاز گرفتی!")
 
 async def check_math_quest(client, message, text):
-    is_reg = await check_user_reg(message.from_user.id)
-    if not is_reg:
-        reg_text = f"😱| {message.from_user.first_name} چاقال هنوز ثبت نام نکرده ..."
-        await client.send_message(message.chat.id, reg_text)
-    elif text[1] in task_math.keys():
+    # is_reg = await check_user_reg(message.from_user.id)
+    # if not is_reg:
+    #     reg_text = f"😱| {message.from_user.first_name} چاقال هنوز ثبت نام نکرده ..."
+    #     await client.send_message(message.chat.id, reg_text)
+    if text[1] in task_math.keys():
         answer = text[1]
         score = task_math[answer][0]
         message_id = task_math[answer][1]
