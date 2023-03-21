@@ -17,4 +17,4 @@ from etc import reporter
 
 except Exception as e:
     tb = e.__traceback__
-    reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name)
+    reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)

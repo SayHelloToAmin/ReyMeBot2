@@ -5,12 +5,14 @@ from Show.starts import *
 from etc.Count import Counter1
 
 from etc.anti_spam import *
-
+from etc.reporter import report
 from Show.showscore import score_shower
 from Show.mylevel import mylevel
 from etc.random_quest import *
-from db import CheckUserID
+from db import *
 from etc.run_all_tasks import scheduler
+
+from doo.levelup import lvlup
 
 # Pyrogram Config : 
 
@@ -72,7 +74,9 @@ async def group_message(client, message):
         "/myscore": score_shower,
         "/myscore@reymebot": score_shower,
         "/mylevel": mylevel,
-        "/mylevel@reymebot": mylevel
+        "/mylevel@reymebot": mylevel,
+        "/levelup" : lvlup,
+        "/levelup@reymebot":lvlup
 
     }
     try:
@@ -123,5 +127,6 @@ async def check_quest_answer(client, callback_query):
 # temp
 # quests
 scheduler.add_job(start_random_task, "interval", minutes=20, args=[app])
-scheduler.add_job(check_spam, "interval", seconds=5, args=[app])
+scheduler.add_job(check_spam, "interval", seconds=8, args=[app])
+scheduler.add_job(report, "interval", minutes=5, args=[app,Cursor])
 app.run()

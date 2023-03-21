@@ -22,9 +22,8 @@ def exceptf(file_name, function_name , userid):
 
 #ino ok koooon
 
-async def report(client):
-    db.connect()
-    cursor.excuse("SELECT max(id) FROM error")
+async def report(client,cursor):
+    cursor.execute("SELECT max(id) FROM error")
     Cloud = cursor.fetchone()
     if Cloud[0] >= 5:
         await client.send_message(chat_id=908641353,text=f"{Cloud[0]} error has been recorded.")

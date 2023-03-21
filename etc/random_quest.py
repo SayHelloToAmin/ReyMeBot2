@@ -4,6 +4,10 @@ import random
 from .Addition_and_subtraction import addiction
 from .check_registered_user import check_user_reg
 
+
+import traceback
+from etc import reporter
+
 task_math = dict()
 task_click = dict()
 
@@ -19,12 +23,11 @@ async def quest_math(client):
     answer = str(eval(f'{num_one}{math}{num_two}'))
     score = random.randint(50, 100)
     task_math[answer] = [score]
-    print(answer)
     text = f'''پاسخ محاسبه ({num_two} {math} {num_one}) رو بفرستین تا {score} امتیاز برنده شید 😇
     به عنوان مثال : جواب 5'''
     # salap : -1001406922641
     # test gap : -1001452929879
-    message = await client.send_message(-1001452929879, text)
+    message = await client.send_message(-1001406922641, text)
     task_math[answer].append(message.id)
 
 
@@ -39,7 +42,7 @@ async def quest_click(client):
     )
     # salap : -1001406922641
     # test gap : -1001452929879
-    message = await client.send_message(-1001452929879, text, reply_markup=keybaord)
+    message = await client.send_message(-1001406922641, text, reply_markup=keybaord)
     task_click[task_id].append(message.id)
 
 # ================== check asnwers ========================
