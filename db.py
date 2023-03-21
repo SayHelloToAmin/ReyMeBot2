@@ -1,14 +1,14 @@
 import mysql.connector
 import traceback
-from etc import reporter
+from etc.reporter import exceptf
 from datetime import datetime
 
 # Connect to MySQL Server :
 db = mysql.connector.connect(
     host='localhost',
-    user="farhadb1_farhadb1",
-    password="KhodeAminHastam",
-    database="farhadb1_Reyme",
+    user="root",
+    password="KhodeAmin",
+    database="reymebot",
     # auth_plugin='mysql_native_password'
 
 )
@@ -20,23 +20,18 @@ Cursor = db.cursor()
 # ====================== Check if User Id is exist in Database=====================
 
 def CheckUserID(userid):
-    try:
-
-        Cursor.execute(f"SELECT USERNAMES from status WHERE userid = {userid}")
+        Cursor.execute(f"SELECT ID from status WHERE userid = {userid}")
         Cloud = Cursor.fetchone()
         if Cloud:
             return True
         else:
             return False
-    except Exception as e:
-        tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
+
 
 
 # =======================Register User=============================================
 
 def registeruser(NickName, user_id):
-    try:
         try:
             Cursor.execute("INSERT INTO status (usernames,userid) VALUES (%s , %s )", (NickName, user_id))
             db.commit()
@@ -44,9 +39,7 @@ def registeruser(NickName, user_id):
             return False
         else:
             return True
-    except Exception as e:
-        tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,user_id)
+
 
 
 # =================================Count Messages and XP================================================
@@ -61,9 +54,10 @@ def counter(user_id):
         db.commit()
         Cursor.execute(f"""UPDATE status 
                         SET xp = xp + 1 WHERE userid = {user_id} """)
+        db.commit()
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,user_id)
+        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,user_id)
 
 
 # ===================================Get Score====================================
@@ -78,7 +72,7 @@ def give_score(userid):
         return Cloud[0]
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
+        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
 
 
 # =================================== SET SCORE ============================================
@@ -92,7 +86,7 @@ def setscore(userid, value):
         db.commit()
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
+        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
 
 
 
@@ -128,7 +122,7 @@ def checkrank(userid):
             return False
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
+        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
 
 #===============================================get level================================================
 
@@ -141,7 +135,7 @@ def getlevel(userid):
         return Cloud[0]
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
+        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
 
 
 #================================================get xp and xp needed====================================================
@@ -156,7 +150,7 @@ def getxp(userid):
         return Cloud[0]
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
+        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
 
 
 #===========================================set new needed_xp================================================================
@@ -168,10 +162,11 @@ def upneedxp(userid):
         Cursor.execute(f"""UPDATE status 
                         SET needed_xp = needed_xp * 1.2 
                         WHERE USERID = {userid} """)
+        db.commit()
         return True
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
+        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
 
 
 
@@ -184,10 +179,10 @@ def upxp(userid,value):
         Cursor.execute("""UPDATE status 
                         SET xp = %s
                         WHERE USERID = %s """,(value,userid))
-        return True
+        db.commit()
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
+        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
 
 
 
@@ -201,10 +196,10 @@ def uplevel(userid):
         Cursor.execute(f"""UPDATE status 
                         SET level = level + 1
                         WHERE USERID = {userid} """)
-        return True
+        db.commit()
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
+        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
 
 
 
@@ -217,7 +212,63 @@ def downlevel(userid):
         Cursor.execute(f"""UPDATE status 
                         SET level = level - 1
                         WHERE USERID = {userid} """)
+        db.commit()
         return True
     except Exception as e:
         tb = e.__traceback__
-        reporter.exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
+        exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name ,userid)
+
+
+#==========================================================set lottery point and number==============================================
+
+# this function just update lottery point and more details
+
+async def lotterysetter(mydic,namedic):
+    for username , np in mydic.items():
+        Cursor.execute(f"""UPDATE status 
+                        SET wins = wins + 1
+                        WHERE userid = {namedic[username]} """)
+        db.commit()
+        Cloud = np.split("-")
+        Cloud1 = int(Cloud[0])
+        Cloud2 = int(Cloud[1])
+        if Cloud1 == 1:
+            Cursor.execute("""UPDATE status 
+                        SET onenum = onenum + 1 , SCORE = SCORE + %s
+                        WHERE userid = %s """,(Cloud2,namedic[username]))
+            db.commit()
+        elif Cloud1 == 2:
+            Cursor.execute("""UPDATE status 
+                        SET twonum = twonum + 1 , SCORE = SCORE + %s
+                        WHERE userid = %s """,(Cloud2,namedic[username]))
+            db.commit()
+        elif Cloud1 == 4:
+            Cursor.execute("""UPDATE status 
+                        SET fournum = fournum + 1 , SCORE = SCORE + %s
+                        WHERE userid = %s """,(Cloud2,namedic[username]))
+            db.commit()
+        elif Cloud1 == 5:
+            Cursor.execute("""UPDATE status 
+                        SET fivenum = fivenum + 1 , SCORE = SCORE + %s
+                        WHERE userid = %s """,(Cloud2,namedic[username]))
+            db.commit()
+        elif Cloud1 == 6:
+            Cursor.execute("""UPDATE status 
+                        SET jackpot = jackpot + 1 , SCORE = SCORE + %s
+                        WHERE userid = %s """,(Cloud2,namedic[username]))
+            db.commit()
+        elif Cloud1 == 3:
+            Cursor.execute("""UPDATE status 
+                        SET threenum = threenum + 1 , SCORE = SCORE + %s
+                        WHERE userid = %s """,(Cloud2,namedic[username]))
+            db.commit()
+
+
+
+
+
+#======================================================username updater======================================================
+
+def upname(userid,name):
+    Cursor.execute("UPDATE status SET usernames = %s WHERE USERID = %s", (name, userid))
+    db.commit()
