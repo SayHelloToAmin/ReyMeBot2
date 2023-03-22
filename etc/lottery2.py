@@ -1,7 +1,7 @@
 import time
 import asyncio
 import random
-
+from etc.Addition_and_subtraction import subtraction
 from db import lotterysetter , upname
 # set up variables for the lottery
 participants = {}
@@ -19,9 +19,7 @@ wnameid = {}
 async def run_lottery(Client,Message):
     await Client.send_message(Message.chat.id,"⏱ |  فرصت ارسال تموم شد ! در حال بررسی جواب ها ! 🔥")
     global participants, lottery_numbers, lottery_started , last_lottery , lottext,winners , nameid , wnameid
-    # lottery_numbers = random.sample(range(0, 100), 6)
-    lottery_numbers = [1,2,3,4,5,6]
-    print(lottery_numbers)
+    lottery_numbers = random.sample(range(0, 100), 6)
     for username, user_numbers in participants.items():
         correct_guesses = len(set(user_numbers) & set(lottery_numbers))
         if correct_guesses == 0:
@@ -76,13 +74,13 @@ async def startlot(Client,Message,text):
 
 Ex) /lottery 1 2 3 4 5 6""")
     lottery_started = True
-    await asyncio.sleep(10)
+    await asyncio.sleep(600)
     await Client.send_message(Message.chat.id, f"""⏳ | فقط 10 دقیقه دیگه تا اعلام نتایج باقی مونده ! 
 Ex) /lottery 1 2 3 4 5 6""")
-    await asyncio.sleep(5)
+    await asyncio.sleep(300)
     await Client.send_message(Message.chat.id, f"""⏳ | فقط 5 دقیقه دیگه تا اعلام نتایج باقی مونده ! 
 Ex) /lottery 1 2 3 4 5 6""")
-    await asyncio.sleep(5)
+    await asyncio.sleep(240)
     await Client.send_message(Message.chat.id, f"""⏳ | فقط 1 دقیقه دیگه تا اعلام نتایج باقی مونده ! 
 Ex) /lottery 1 2 3 4 5 6""")
     if len(participants) != 0:
@@ -122,6 +120,7 @@ async def first(Client,Message,text):
                 # add the user's numbers to the list of participants
                 if not Message.from_user.first_name in participants.keys():
                     participants[Message.from_user.first_name] = user_numbers
+                    await subtraction(Message.from_user.id,40.0)
                     await Client.send_message(Message.chat.id, f"📝✿ | اعداد {Message.from_user.first_name} با موفقیت ثبت شدند! ⬱{user_numbers}")
                     nameid[Message.from_user.first_name] = Message.from_user.id
                 else:
