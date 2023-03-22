@@ -95,7 +95,9 @@ async def check_quest_answer(client, callback_query):
     data = callback_query.data.split('-')
     commands = {
         'click': check_click_quest,
-        'mute': mute_user,
+        'mute_confirm': confirm_mute_user,
+        'back_mute': back_method,
+        'mute_user': mute_user
     }
     try:
         is_reg = CheckUserID(callback_query.from_user.id)
