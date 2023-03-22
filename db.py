@@ -88,7 +88,7 @@ def setscore(userid, value):
 # this function can record the randomly errors
 
 def error_reporter(userid, description):
-    
+
     current_datetime = datetime.now()
     current_datetime_formatted = current_datetime.strftime("%Y-%m-%d %H:%M:%S")
     sql = "INSERT INTO error (Describtion , userid , date) VALUES (%s , %s , %s)"
@@ -168,7 +168,8 @@ def upxp(userid,value):
 
 
 
-#====================================================add one level=================================================================
+# ====================================================add one
+# level=================================================================
 
 #this function could update the level
 

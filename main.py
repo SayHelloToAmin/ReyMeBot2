@@ -3,7 +3,7 @@ from pyrogram import Client, filters
 from Show.starts import *
 from etc.randomly import *
 from etc.Count import Counter1
-from etc.randomly import addpm , pm , isthattime
+from etc.randomly import addpm, pm, isthattime
 from etc.anti_spam import *
 
 from Show.showscore import score_shower
@@ -13,6 +13,7 @@ from db import *
 from etc.run_all_tasks import scheduler
 from etc.lottery2 import first
 from doo.levelup import lvlup
+from Do.pay import *
 
 # Pyrogram Config : 
 
@@ -22,34 +23,6 @@ app = Client(
     api_hash="3eac821a6d1e0b0e2969ae0ad2f970ea",
     bot_token="1949862634:AAHlTHP-tNqz_DKK72aThdcIc48jlosg46M"
 )
-
-
-# =====================================================================
-
-# custom filter to check if user in not registered
-# async def check_reg_status(_, client, message):
-#     text = message.text.split()[0].lower()
-#     if text == "/start" or text == "/start@reymebot":
-#         return True
-#     else:
-#         if CheckUserID(message.from_user.id):
-#             return True
-#         else:
-#             await client.send_message(message.chat.id, 'ثبت نام نکردی')
-#             return False
-
-# async def check_reg_status_temp(client, message):
-#     text = message.text.split()[0].lower()
-#     if text == "/start" or text == "/start@reymebot":
-#         return True
-#     else:
-#         if CheckUserID(message.from_user.id):
-#             return True
-#         else:
-#             await client.send_message(message.chat.id, 'ثبت نام نکردی')
-#             return False
-
-# check_register = filters.create(check_reg_status)
 
 
 # custom filter to check if user is banned
@@ -68,7 +41,6 @@ async def group_message(client, message):
     if CheckUserID(message.from_user.id):
         if not isthattime:
             await Counter1(message)
-        await add_user(message.from_user.id)
     text = message.text.split()
     commands = {
         "/start": first_start,
@@ -78,10 +50,11 @@ async def group_message(client, message):
         "/myscore@reymebot": score_shower,
         "/mylevel": mylevel,
         "/mylevel@reymebot": mylevel,
-        "/levelup" : lvlup,
-        "/levelup@reymebot":lvlup,
-        "/lottery" : first,
-        "/lottery@reymebot" : first
+        "/levelup": lvlup,
+        "/levelup@reymebot": lvlup,
+        "/lottery": first,
+        "/lottery@reymebot": first,
+        '/pay': pay_command,
 
     }
     try:
@@ -91,6 +64,7 @@ async def group_message(client, message):
                                         تو هنوز تو بات ثبت نشدی ! استارتش کون دیگه"""
             await message.reply(reg_text)
         else:
+            await add_user(message.from_user.id)
             await commands[text[0].lower()](client, message, text)
     except Exception as e:
         print(e)
@@ -133,5 +107,5 @@ async def check_quest_answer(client, callback_query):
 # quests
 scheduler.add_job(start_random_task, "interval", minutes=20, args=[app])
 scheduler.add_job(check_spam, "interval", seconds=7, args=[app])
-scheduler.add_job(addpm , "interval", minutes=4, args=[app])
+scheduler.add_job(addpm, "interval", minutes=4, args=[app])
 app.run()
