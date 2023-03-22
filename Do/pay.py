@@ -38,6 +38,8 @@ async def pay_command(client, message, text):
     elif entered_score == 0:
         await message.reply('صفر امتیاز انتقال بدم کونکش؟')
 
+    elif message.from_user.id == to_user_id:
+        await message.reply('میخوای به خودت امتیاز بدی کیری خان')
     # if every thing was fine take and give socres
     elif is_safe:
         first_name = message.reply_to_message.from_user.first_name
