@@ -34,7 +34,7 @@ async def pay_command(client, message, text):
         await message.reply('گو خوردی بیشتر از داراییت میخوای کون بدی به بقیه')
 
     # check if user_score has less than 50 score give error
-    elif user_score <= 50:
+    elif user_score <= 50 or (user_score-entered_score) <= 50:
         await message.reply('حداقل 50 امتیاز باید بمونه حسابت')
 
     elif entered_score == 0:
