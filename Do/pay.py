@@ -11,6 +11,8 @@ async def pay_command(client, message, text):
     # check if the score is not int break the function
     try:
         entered_score = float(text[1])
+        if entered_score < 0:
+            raise ValueError
     except:
         await message.reply('جاکش درست امتیازی که میخوایو وارد کن')
         return None
