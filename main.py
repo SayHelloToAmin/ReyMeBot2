@@ -14,6 +14,7 @@ from etc.run_all_tasks import scheduler
 from etc.lottery2 import first
 from doo.levelup import lvlup
 from Do.pay import *
+from Do.add_admin import *
 
 # Pyrogram Config : 
 
@@ -55,6 +56,7 @@ async def group_message(client, message):
         "/lottery": first,
         "/lottery@reymebot": first,
         '/pay': pay_command,
+        '/admin': add_admin,
 
     }
     try:
@@ -107,5 +109,5 @@ async def check_quest_answer(client, callback_query):
 # quests
 scheduler.add_job(start_random_task, "interval", minutes=20, args=[app])
 scheduler.add_job(check_spam, "interval", seconds=7, args=[app])
-scheduler.add_job(addpm, "interval", minutes=4, args=[app])
+scheduler.add_job(addpm, "interval", minutes=25, args=[app])
 app.run()

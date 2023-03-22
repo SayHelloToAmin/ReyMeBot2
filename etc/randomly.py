@@ -21,7 +21,7 @@ async def caller(Message):
 
 async def addpm(Client):
     global pm , isthattime
-    if pm >= 40:
+    if pm >= 110:
         pm = 0
         isthattime = True
         wtime = random.randint(90,150)
