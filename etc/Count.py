@@ -1,6 +1,6 @@
 import db
 import traceback
-from .reporter import exceptf
+from etc.randomly import isthattime
 
 
 # ============Count Messages============
@@ -10,13 +10,7 @@ from .reporter import exceptf
 
 async def Counter1(Message):
     if db.CheckUserID(Message.from_user.id):
-        try:
-            if db.CheckUserID(Message.from_user.id):
-                db.counter(Message.from_user.id)
-            else:
-                pass
-        except Exception as e:
-            tb = e.__traceback__
-            exceptf(tb.tb_frame.f_code.co_filename, tb.tb_frame.f_code.co_name, Message.from_user.id)
+        db.counter(Message.from_user.id)
     else:
-        pass
+        pass    
+

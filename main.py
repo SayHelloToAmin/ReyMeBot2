@@ -1,11 +1,11 @@
 from pyrogram import Client, filters
 
 from Show.starts import *
-
+from etc.randomly import *
 from etc.Count import Counter1
-
+from etc.randomly import addpm , pm , isthattime
 from etc.anti_spam import *
-from etc.reporter import report
+
 from Show.showscore import score_shower
 from Show.mylevel import mylevel
 from etc.random_quest import *
@@ -64,8 +64,11 @@ spam_filter = filters.create(check_banned_user)
 
 @app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter)
 async def group_message(client, message):
-    await Counter1(message)
-    await add_user(message.from_user.id)
+    await caller(message)
+    if CheckUserID(message.from_user.id):
+        if not isthattime:
+            await Counter1(message)
+        await add_user(message.from_user.id)
     text = message.text.split()
     commands = {
         "/start": first_start,
@@ -83,7 +86,7 @@ async def group_message(client, message):
     }
     try:
         is_reg = CheckUserID(message.from_user.id)
-        if text[0] in commands.keys() and not is_reg:
+        if (text[0].lower() in commands.keys()) and not is_reg:
             reg_text = f"""😱| [{message.from_user.first_name}](tg://user?id={message.from_user.id}) چاقال 
                                         تو هنوز تو بات ثبت نشدی ! استارتش کون دیگه"""
             await message.reply(reg_text)
@@ -130,5 +133,5 @@ async def check_quest_answer(client, callback_query):
 # quests
 scheduler.add_job(start_random_task, "interval", minutes=20, args=[app])
 scheduler.add_job(check_spam, "interval", seconds=7, args=[app])
-scheduler.add_job(report, "interval", minutes=5, args=[app,Cursor])
+scheduler.add_job(addpm , "interval", minutes=4, args=[app])
 app.run()

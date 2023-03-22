@@ -1,7 +1,7 @@
 import db
 
 import traceback
-from etc import reporter
+
 
 
 async def score_shower(Client, Message, text):

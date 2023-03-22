@@ -4,7 +4,7 @@ from .check_registered_user import check_user_reg
 
 
 import traceback
-from etc import reporter
+
 
 user_dict = dict()
 banned_users = dict()

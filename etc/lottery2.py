@@ -50,6 +50,8 @@ async def run_lottery(Client,Message):
     lottery_numbers = []
     nameid.clear()
     wnameid.clear()
+    lottext = """🐉 | لاتاری تموم شد ! نتایج به این صورته : ⤥ 
+ """
     
 
     #     # reset participant's guesses
