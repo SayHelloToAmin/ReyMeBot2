@@ -15,6 +15,8 @@ from etc.lottery2 import first
 from doo.levelup import lvlup
 from Do.pay import *
 from Do.add_admin import *
+from Do.panel_system import *
+
 
 # Pyrogram Config : 
 
@@ -57,6 +59,7 @@ async def group_message(client, message):
         "/lottery@reymebot": first,
         '/pay': pay_command,
         '/admin': add_admin,
+        '/mute': mute_command
 
     }
     try:
@@ -92,6 +95,7 @@ async def check_quest_answer(client, callback_query):
     data = callback_query.data.split('-')
     commands = {
         'click': check_click_quest,
+        'mute': mute_user,
     }
     try:
         is_reg = CheckUserID(callback_query.from_user.id)
