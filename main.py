@@ -108,6 +108,7 @@ async def check_quest_answer(client, callback_query):
                                                    تو هنوز تو بات ثبت نشدی ! استارتش کون دیگه"""
             await callback_query.answer(reg_text, show_alert=True)
         else:
+            await add_user(callback_query.from_user.id)
             await commands[data[0]](client, callback_query, data)
     except Exception as e:
         print(e)
