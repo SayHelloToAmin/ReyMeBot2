@@ -27,22 +27,22 @@ async def validate_to_user(user_id: int, to_user_id: int, client=None, message=N
     user_level = getlevel(user_id)
     text = ''
     if not is_reg:
-        text += 'یارو ثبت نام نکرده'
+        text = 'یارو ثبت نام نکرده'
 
     elif getlevel(to_user_id) > user_level:
-        text += 'لولش بیشتره'
+        text = 'لولش بیشتره'
 
     # check if to_user is admin or muted or doesnt exists on group
     elif client:
         to_user = await client.get_chat_member(message.chat.id, to_user_id)
         if to_user.status in (ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER):
-            text += 'ادمینه'
+            text = 'ادمینه'
         elif to_user.status in (ChatMemberStatus.LEFT, ChatMemberStatus.BANNED):
-            text += 'در گروه حضور ندارد'
+            text = 'در گروه حضور ندارد'
         else:
             try:
                 if not to_user.permissions.can_send_messages:
-                    text += 'میوت شده قبلا'
+                    text = 'میوت شده قبلا'
             except:
                 pass
 
@@ -141,6 +141,6 @@ async def mute_user(client, callback_query, data):
             else:
                 await callback_query.answer('امتیاز کافی نداری', show_alert=True)
         else:
-            await callback_query.answer(validate)
+            await callback_query.answer(validate, show_alert=True)
     else:
-        await callback_query.answer('برو بازیتو کن بچه')
+        await callback_query.answer('برو بازیتو کن بچه', show_alert=True)
