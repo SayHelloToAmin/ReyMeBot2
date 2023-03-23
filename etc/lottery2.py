@@ -30,6 +30,7 @@ async def run_lottery(Client,Message):
                 winners[username] = str(correct_guesses)+"-"+str(point)
                 wnameid[username] = nameid[username]
                 lottext = lottext + f"""
+                
 🏆 | دوست خوبمون {username} تونست {correct_guesses} از عدد هارو درست حدس بزنه ... + {point}"""
         else:
             point = 1400 + (len(participants)*40)
