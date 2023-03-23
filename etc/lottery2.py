@@ -52,16 +52,6 @@ async def run_lottery(Client,Message):
     wnameid.clear()
     lottext = """🐉 | لاتاری تموم شد ! نتایج به این صورته : ⤥ 
  """
-    
-
-    #     # reset participant's guesses
-    #     participants[username] = []
-    # lottery_started = False
-
-
-
-
-
 
 
 async def startlot(Client,Message,text):
@@ -131,7 +121,3 @@ async def first(Client,Message,text):
                 await Message.reply(str(e))
         else:
             pass
-
-
-
-

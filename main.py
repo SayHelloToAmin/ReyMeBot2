@@ -16,7 +16,7 @@ from doo.levelup import lvlup
 from Do.pay import *
 from Do.add_admin import *
 from Do.panel_system import *
-
+from Show.lotterystatus import lstatus
 
 # Pyrogram Config : 
 
@@ -59,7 +59,9 @@ async def group_message(client, message):
         "/lottery@reymebot": first,
         '/pay': pay_command,
         '/admin': add_admin,
-        '/mute': mute_command
+        '/mute': mute_command,
+        "/lstatus" : lstatus,
+        "/lstatus@reymebot" : lstatus
 
     }
     try:

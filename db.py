@@ -250,3 +250,15 @@ async def lotterysetter(mydic,namedic):
 def upname(userid,name):
     Cursor.execute("UPDATE status SET usernames = %s WHERE USERID = %s", (name, userid))
     db.commit()
+
+
+
+#=========================================================get lottery status=======================================================
+
+#def this functin will return a touple in the list that can return the user's information
+
+
+async def lotterystatus(userid):
+    Cursor.execute(f"SELECT wins,onenum,twonum,threenum,fournum,fivenum,jackpot FROM status WHERE userid = {userid}")
+    Cloud = Cursor.fetchall()
+    return Cloud[0]
