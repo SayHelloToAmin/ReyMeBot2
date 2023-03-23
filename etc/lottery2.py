@@ -9,7 +9,7 @@ lottery_numbers = []
 lottery_started = False
 last_lottery = 0
 lottext = """🐉 | لاتاری تموم شد ! نتایج به این صورته : ⤥ 
- """
+  """
 winners = {}
 nameid = {}
 wnameid = {}
@@ -19,11 +19,11 @@ wnameid = {}
 async def run_lottery(Client,Message):
     await Client.send_message(Message.chat.id,"⏱ |  فرصت ارسال تموم شد ! در حال بررسی جواب ها ! 🔥")
     global participants, lottery_numbers, lottery_started , last_lottery , lottext,winners , nameid , wnameid
-    lottery_numbers = random.sample(range(0, 100), 6)
+    lottery_numbers = random.sample(range(0, 40), 6)
     for username, user_numbers in participants.items():
         correct_guesses = len(set(user_numbers) & set(lottery_numbers))
         if correct_guesses == 0:
-            lottext = lottext + f"""
+            lottext = lottext + f""" 
             ❌ | دوست خوبمون {username} نتونست هیچ کدوم از عدد هارو حدس بزنه ... """    
         elif correct_guesses >= 1 and correct_guesses <= 5:
                 point = (correct_guesses * 80) + (len(participants)*40)
@@ -37,10 +37,10 @@ async def run_lottery(Client,Message):
             winners[username] = str(correct_guesses)+"-"+str(point)
             wnameid[username] = nameid[username]
             lottext = lottext + f"""
-            🎰🎉  |⬱ جک پات ⇶  دوست سفیدمون {username} تونست همه عدد هارو درست حدس بزنه ... + {point} 🏆"""
+            🎰🎉  |⬱ جک پات ⇶  دوست سفیدمون {username} تونست همه عدد هارو درست حدس بزنه ... + {point} 🏆🏆🏆🏆"""
     lottext = lottext + f"""
 
-📝 | اعداد صحیح باری : {lottery_numbers}
+📝 | اعداد صحیح بازی : {lottery_numbers}
 🤞🏿 |  20 دقیقه دیگه دوباره میتونین با /lottery یه لاتاری دیگه رو شروع کنین"""
     await lotterysetter(winners,wnameid)
     winners.clear()
