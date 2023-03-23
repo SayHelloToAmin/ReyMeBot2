@@ -125,7 +125,7 @@ async def mute_user(client, callback_query, data):
         time = int(data[1][:-1])
         time_mute = timedelta(hours=time) if data[1][-1] == 'h' else timedelta(minutes=time)
 
-        validate = await validate_to_user(user_id, to_user_id)
+        validate = await validate_to_user(user_id, to_user_id, client, callback_query.message)
         if validate is True:
             await client.restrict_chat_member(callback_query.message.chat.id, to_user_id, ChatPermissions(),
                                               datetime.now() + time_mute)
