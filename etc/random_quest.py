@@ -17,9 +17,9 @@ task_click = dict()
 
 async def quest_math(client):
     task_math.clear()
-    num_one = random.randint(1, 500)
-    num_two = random.randint(1, 500)
-    math = '-'
+    num_one = random.randint(1, 100)
+    num_two = random.randint(1, 100)
+    math = random.choice(["-","+"])
     answer = str(eval(f'{num_one}{math}{num_two}'))
     score = random.randint(50, 100)
     task_math[answer] = [score]

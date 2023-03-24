@@ -33,7 +33,7 @@ async def run_lottery(Client,Message):
                 
 🏆 | دوست خوبمون {username} تونست {correct_guesses} از عدد هارو درست حدس بزنه ... + {point}"""
         else:
-            point = 1400 + (len(participants)*40)
+            point = 10000 + (len(participants)*40)
             winners[username] = str(correct_guesses)+"-"+str(point)
             wnameid[username] = nameid[username]
             lottext = lottext + f"""
@@ -61,7 +61,7 @@ async def startlot(Client,Message,text):
 ⏳| حواستون باشه فقط 20 دقیقه فرصت دارین عدد های خودتونو بفرستین !
 
 
-💵 | ورودی هر نفر 40 امتیاز و جایزه کسی که هر 6 عدد رو درست حدس بزنه 1400 امتیاز هست ! 
+💵 | ورودی هر نفر 40 امتیاز و جایزه کسی که هر 6 عدد رو درست حدس بزنه 10000 امتیاز هست ! 
 【 به هر حال به کسانی که حتی یک عدد رو درست حدس زدن جایزه داده میشود و به ازای هر شرکت کننده به جایزه ها 40 پوینت اضافه میشود 】
 ⍡ برای ارسال اعداد خود میتوانید از این مثال استفاده کنید 
 

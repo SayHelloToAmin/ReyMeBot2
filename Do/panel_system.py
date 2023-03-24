@@ -10,11 +10,11 @@ from etc.Addition_and_subtraction import subtraction
 # data[0]: function_call / data[1]: time_mute / data[2]: to_user_id / data[3]: user_id / data[4]: score_to_mute
 async def create_keyboard(user_id: int, to_user_id: int):
     keyboard = InlineKeyboardMarkup([
-        [InlineKeyboardButton('نیم ساعت - 50 امتیاز', callback_data=f'mute_confirm-30m-{to_user_id}-{user_id}-50'), ],
-        [InlineKeyboardButton('2 ساعت - 100 امتیاز', callback_data=f'mute_confirm-2h-{to_user_id}-{user_id}-100'), ],
-        [InlineKeyboardButton('4 ساعت - 300 امتیاز', callback_data=f'mute_confirm-4h-{to_user_id}-{user_id}-300'), ],
-        [InlineKeyboardButton('8 ساعت - 600 امتیاز', callback_data=f'mute_confirm-8h-{to_user_id}-{user_id}-600'), ],
-        [InlineKeyboardButton('12 ساعت - 1000 امتیاز', callback_data=f'mute_confirm-12h-{to_user_id}-{user_id}-1000'), ]
+        [InlineKeyboardButton('نیم ساعت - 450 امتیاز', callback_data=f'mute_confirm-30m-{to_user_id}-{user_id}-450'), ],
+        [InlineKeyboardButton('1 ساعت - 800 امتیاز', callback_data=f'mute_confirm-1h-{to_user_id}-{user_id}-800'), ],
+        [InlineKeyboardButton('2 ساعت - 1500 امتیاز', callback_data=f'mute_confirm-2h-{to_user_id}-{user_id}-1500'), ],
+        [InlineKeyboardButton('6 ساعت - 2800 امتیاز', callback_data=f'mute_confirm-6h-{to_user_id}-{user_id}-2800'), ],
+        [InlineKeyboardButton('12 ساعت - 5000 امتیاز', callback_data=f'mute_confirm-12h-{to_user_id}-{user_id}-5000'), ]
     ]
     )
     return keyboard

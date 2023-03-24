@@ -12,7 +12,7 @@ from etc.random_quest import *
 from db import *
 from etc.run_all_tasks import scheduler
 from etc.lottery2 import first
-from doo.levelup import lvlup
+from Do.levelup import lvlup
 from Do.pay import *
 from Do.add_admin import *
 from Do.panel_system import *
@@ -108,7 +108,6 @@ async def check_quest_answer(client, callback_query):
                                                    تو هنوز تو بات ثبت نشدی ! استارتش کون دیگه"""
             await callback_query.answer(reg_text, show_alert=True)
         else:
-            await add_user(callback_query.from_user.id)
             await commands[data[0]](client, callback_query, data)
     except Exception as e:
         print(e)
