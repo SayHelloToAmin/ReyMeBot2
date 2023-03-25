@@ -21,8 +21,8 @@ async def quest_math(client):
             await client.delete_messages(-1001406922641, msg_id[1])
     task_math.clear()
     num_one = random.randint(1, 100)
-    num_two = random.randint(1, 100)
-    math = random.choice(["-","+"])
+    num_two = random.randint(num_one, 100)
+    math = random.choice(["-", "+"])
     answer = str(eval(f'{num_one}{math}{num_two}'))
     score = random.randint(50, 100)
     task_math[answer] = [score]
