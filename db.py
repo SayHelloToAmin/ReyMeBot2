@@ -262,3 +262,20 @@ async def lotterystatus(userid):
     Cursor.execute(f"SELECT wins,onenum,twonum,threenum,fournum,fivenum,jackpot FROM status WHERE userid = {userid}")
     Cloud = Cursor.fetchall()
     return Cloud[0]
+
+
+
+#=====================================================mute log =======================================================================
+
+#this function will record the mute history !
+
+def muterecorder(userid_1,userid_2):
+    #userid_1 kasi ke mute karde 
+    #userid_2 kasi ke mute shode
+
+    try:
+        Cursor.execute("INSERT INTO MUTES (byy,who,date) VALUES (%s,%s,%s)",(userid_1,userid_2,datetime.now()))
+        db.commit()
+    except:
+          Cursor.execute("""update mutes
+set much = much +1 , date = %s where byy = %s and who = %s""",(datetime.now(),userid_1,userid_2))
