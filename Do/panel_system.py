@@ -27,22 +27,22 @@ async def validate_to_user(user_id: int, to_user_id: int, client=None, message=N
     user_level = getlevel(user_id)
     text = ''
     if not is_reg:
-        text = 'یارو ثبت نام نکرده'
+        text = f"هنوز ثبت نام نکرده😱{message.reply_to_message.from_user.first_name} "
 
     elif getlevel(to_user_id) > user_level:
-        text = 'لولش بیشتره'
+        text = '🫡 |کسی که میخوای میوتش کنی لولش از تو بالاتره !'
 
     # check if to_user is admin or muted or doesnt exists on group
     elif client:
         to_user = await client.get_chat_member(message.chat.id, to_user_id)
         if to_user.status in (ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER):
-            text = 'ادمینه'
+            text = '🫡 |کسی که میخوای میوتش کنی ادمین گپه!'
         elif to_user.status in (ChatMemberStatus.LEFT, ChatMemberStatus.BANNED):
-            text = 'در گروه حضور ندارد'
+            text = '🫡 |کسی که میخوای میوتش کنی اصلا تو گپ نیست!'
         else:
             try:
                 if not to_user.permissions.can_send_messages:
-                    text = 'میوت شده قبلا'
+                    text = '🫡 |کسی که میخوای میوتش کنی از قبل میوت شده!'
             except:
                 pass
 
@@ -90,12 +90,12 @@ async def confirm_mute_user(client, callback_query, data):
                 [InlineKeyboardButton('برگشت', callback_data=back_data), ],
             ]
             )
-            await callback_query.edit_message_text(f'برای تایید ({time}) با {score} امتیاز تایید کنید',
+            await callback_query.edit_message_text(f'✅ | یک بار دیگه تایید کن {score} امتیاز برای {time} میوت !',
                                                    reply_markup=keyboard)
         else:
-            await callback_query.answer('امتیاز کافی نداری', show_alert=True)
+            await callback_query.answer('❌ | امتیاز کافی برای اینکار نداری!', show_alert=True)
     else:
-        await callback_query.answer('برو بازیتو کن بچه', show_alert=True)
+        await callback_query.answer('🤡 | تورو کی ریده ؟', show_alert=True)
 
 
 # =============== back method ===================
@@ -110,7 +110,7 @@ async def back_method(client, callback_query, data):
 
         keybaord = await create_keyboard(user_id, to_user_id)
         await callback_query.edit_message_text(
-            f'your score: {user_score}\nانتخاب کن چقدر میخوای ({to_user_firstname}) میوت کنی',
+            f'🤐 | انتخاب کن دقیقا چقدر میخوای {callback_query.reply_to_message.from_user.first_name} میوت باشه ؟ امتیاز فعلیت : {user_score}',
             reply_markup=keybaord)
 
 
@@ -136,11 +136,10 @@ async def mute_user(client, callback_query, data):
             if user_score >= score:
                 await subtraction(user_id, score)
                 to_user_firstname = to_user_firstname.first_name
-                await callback_query.edit_message_text(f'دویت عزیزمون {to_user_firstname} به مدت {data[1]} میوت شد و '
-                                                       f'ازت {score} امتیاز کم کردم')
+                await callback_query.edit_message_text(f'🤐 | با موفقیت {to_user_firstname} رو میوت برای کردم و {score} امتیازم ازت کم کردم ! {data[1]} بعد انمیوت میشی 🐉')
             else:
-                await callback_query.answer('امتیاز کافی نداری', show_alert=True)
+                await callback_query.answer('❌ | امتیاز کافی برای اینکار نداری!', show_alert=True)
         else:
             await callback_query.answer(validate, show_alert=True)
     else:
-        await callback_query.answer('برو بازیتو کن بچه', show_alert=True)
+        await callback_query.answer('🤡 | تورو کی ریده ؟', show_alert=True)
