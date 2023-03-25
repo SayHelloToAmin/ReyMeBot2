@@ -1,6 +1,6 @@
 from pyrogram.types import (InlineKeyboardMarkup, InlineKeyboardButton, ChatPermissions)
 from pyrogram.enums import ChatMemberStatus
-from db import CheckUserID, getlevel, give_score
+from db import CheckUserID, getlevel, give_score, muterecorder
 from datetime import datetime, timedelta
 
 from etc.Addition_and_subtraction import subtraction
@@ -110,7 +110,7 @@ async def back_method(client, callback_query, data):
 
         keybaord = await create_keyboard(user_id, to_user_id)
         await callback_query.edit_message_text(
-            f'🤐 | انتخاب کن دقیقا چقدر میخوای {callback_query.reply_to_message.from_user.first_name} میوت باشه ؟ امتیاز فعلیت : {user_score}',
+            f'🤐 | انتخاب کن دقیقا چقدر میخوای {to_user_firstname} میوت باشه ؟ امتیاز فعلیت : {user_score}',
             reply_markup=keybaord)
 
 
@@ -127,14 +127,20 @@ async def mute_user(client, callback_query, data):
 
         validate = await validate_to_user(user_id, to_user_id, client, callback_query.message)
         if validate is True:
-            await client.restrict_chat_member(callback_query.message.chat.id, to_user_id, ChatPermissions(),
-                                              datetime.now() + time_mute)
 
             to_user_firstname = await client.get_users(to_user_id)
             # check if user has enough score
             user_score = give_score(user_id)
             if user_score >= score:
-                await subtraction(user_id, score)
+                # mute if gave any error send it to telegram
+                try:
+                    await client.restrict_chat_member(callback_query.message.chat.id, to_user_id, ChatPermissions(),
+                                                      datetime.now() + time_mute)
+                    await subtraction(user_id, to_user_id)
+                    muterecorder(userid_1, userid_2)  # Log Mute Users
+                except:
+                    await client.send_message(-1001452929879, f'error user:{to_user_firstname}')
+
                 to_user_firstname = to_user_firstname.first_name
                 await callback_query.edit_message_text(f'🤐 | با موفقیت {to_user_firstname} رو میوت برای کردم و {score} امتیازم ازت کم کردم ! {data[1]} بعد انمیوت میشی 🐉')
             else:

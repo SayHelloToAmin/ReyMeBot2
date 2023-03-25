@@ -16,6 +16,9 @@ task_click = dict()
 
 
 async def quest_math(client):
+    if task_math:
+        for msg_id in task_click.values():
+            await client.delete_messages(-1001406922641, msg_id[1])
     task_math.clear()
     num_one = random.randint(1, 100)
     num_two = random.randint(1, 100)
@@ -32,6 +35,9 @@ async def quest_math(client):
 
 
 async def quest_click(client):
+    if task_click:
+        for msg_id in task_click.values():
+            await client.delete_messages(-1001406922641, msg_id[1])
     task_click.clear()
     score = random.randint(10, 30)
     task_id = str(random.randint(500, 2000))
