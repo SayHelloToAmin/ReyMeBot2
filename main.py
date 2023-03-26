@@ -5,7 +5,7 @@ from etc.randomly import *
 from etc.Count import Counter1
 from etc.randomly import addpm, pm, isthattime
 from etc.anti_spam import *
-
+from Do.buyxp import xpbuy
 from Show.showscore import score_shower
 from Show.mylevel import mylevel
 from etc.random_quest import *
@@ -61,7 +61,9 @@ async def group_message(client, message):
         '/admin': add_admin,
         '/mute': mute_command,
         "/lstatus" : lstatus,
-        "/lstatus@reymebot" : lstatus
+        "/lstatus@reymebot" : lstatus,
+        "/buyxp": xpbuy,
+        "/buyxp@reymebot" : xpbuy
 
     }
     try:

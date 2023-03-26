@@ -168,7 +168,7 @@ def upxp(userid,value):
 
 
 
-# ====================================================add one
+# ===================================================add one
 # level=================================================================
 
 #this function could update the level
@@ -279,3 +279,4 @@ def muterecorder(userid_1,userid_2):
     except:
           Cursor.execute("""update mutes
 set much = much +1 , date = %s where byy = %s and who = %s""",(datetime.now(),userid_1,userid_2))
+          db.commit()
