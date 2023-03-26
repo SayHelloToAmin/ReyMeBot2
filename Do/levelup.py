@@ -10,7 +10,7 @@ async def lvlup(Client,Message,text):
 """)
     else:
         level = db.getlevel(userid)
-        Cloud2 = Cloud[1] - Cloud[0]
+        Cloud2 = Cloud[0] - Cloud[1]
         try:
             db.upxp(userid,Cloud2)
         except:

@@ -25,7 +25,7 @@ async def addpm(Client):
         pm = 0
         isthattime = True
         wtime = random.randint(90,150)
-        await Client.send_message(-1001452929879,f"""👹👹 | از همین لحظه پنالتی تایم شروع شد !
+        await Client.send_message(-1001406922641,f"""👹👹 | از همین لحظه پنالتی تایم شروع شد !
           تا {wtime} ثانیه دیگه هر پیام (جز گیف و استیکر) = کسر 55 امتیاز シ""")
         await asyncio.sleep(wtime)
         isthattime = False
