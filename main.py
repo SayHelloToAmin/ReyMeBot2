@@ -24,7 +24,7 @@ app = Client(
     'Reyme',
     api_id=6703845,
     api_hash="3eac821a6d1e0b0e2969ae0ad2f970ea",
-    bot_token="1949862634:AAHlTHP-tNqz_DKK72aThdcIc48jlosg46M"
+    bot_token="1949862634:AAGWQyOS_0xKzD8FT1f1Ky3Gb9geoTmtByY"
 )
 
 
