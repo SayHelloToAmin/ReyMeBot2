@@ -136,8 +136,8 @@ async def mute_user(client, callback_query, data):
                 try:
                     await client.restrict_chat_member(callback_query.message.chat.id, to_user_id, ChatPermissions(),
                                                       datetime.now() + time_mute)
-                    await subtraction(user_id, to_user_id)
-                    muterecorder(userid_1, userid_2)  # Log Mute Users
+                    await subtraction(user_id, score)
+                    muterecorder(user_id, to_user_id)  # Log Mute Users
                 except:
                     await client.send_message(-1001452929879, f'error user:{to_user_firstname}')
 
