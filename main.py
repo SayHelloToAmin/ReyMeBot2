@@ -117,7 +117,7 @@ async def check_quest_answer(client, callback_query):
 
 # temp
 # quests
-scheduler.add_job(start_random_task, "interval", minutes=20, args=[app])
+scheduler.add_job(start_random_task, "interval", minutes=15, args=[app])
 scheduler.add_job(check_spam, "interval", seconds=7, args=[app])
 scheduler.add_job(addpm, "interval", minutes=25, args=[app])
 app.run()
