@@ -59,7 +59,7 @@ async def group_message(client, message):
         "/lottery@reymebot": first,
         '/pay': pay_command,
         '/admin': add_admin,
-        '/mute': mute_command,
+        '/mute@reymebot': mute_command,
         "/lstatus" : lstatus,
         "/lstatus@reymebot" : lstatus,
         "/buyxp": xpbuy,
@@ -82,6 +82,7 @@ async def group_message(client, message):
 # private on message
 @app.on_message(filters.private)
 async def private_message(client, message):
+    print(text)
     text = message.text.split()
     commands = {
         "/start": second_start,
