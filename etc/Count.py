@@ -1,5 +1,4 @@
 import db
-import traceback
 from etc.randomly import isthattime
 
 

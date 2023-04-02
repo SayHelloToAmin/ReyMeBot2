@@ -7,7 +7,7 @@ from datetime import datetime
 db = mysql.connector.connect(
     host='localhost',
     user="root",
-    password="KhodeAmin",
+    password="khodeamin1400",
     database="reymebot",
     # auth_plugin='mysql_native_password'
 
@@ -20,7 +20,7 @@ Cursor = db.cursor()
 # ====================== Check if User Id is exist in Database=====================
 
 def CheckUserID(userid):
-        Cursor.execute(f"SELECT ID from status WHERE userid = {userid}")
+        Cursor.execute(f"SELECT ID FROM statuss WHERE userid = {userid}")
         Cloud = Cursor.fetchone()
         if Cloud is None:
             return False
@@ -32,7 +32,7 @@ def CheckUserID(userid):
 
 def registeruser(NickName, user_id):
         try:
-            Cursor.execute("INSERT INTO status (usernames,userid) VALUES (%s,%s)", (NickName, user_id))
+            Cursor.execute("INSERT INTO statuss (usernames,userid) VALUES (%s,%s)", (NickName, user_id))
             db.commit()
         except:
             return False
@@ -46,11 +46,11 @@ def registeruser(NickName, user_id):
 # this function only count messages of each user and add XP
 
 def counter(user_id):
-        Cursor.execute(f"""UPDATE status 
+        Cursor.execute(f"""UPDATE statuss 
                         SET SCORE = SCORE + 0.25 , COUNT = COUNT + 1
                         WHERE USERID = {user_id} """)
         db.commit()
-        Cursor.execute(f"""UPDATE status 
+        Cursor.execute(f"""UPDATE statuss 
                         SET xp = xp + 1 WHERE userid = {user_id} """)
         db.commit()
 
@@ -62,7 +62,7 @@ def counter(user_id):
 
 def give_score(userid):
 
-        Cursor.execute(f"SELECT SCORE FROM status WHERE USERID = {userid}")
+        Cursor.execute(f"SELECT SCORE FROM statuss WHERE USERID = {userid}")
         Cloud = Cursor.fetchone()
 
         return Cloud[0]
@@ -76,7 +76,7 @@ def give_score(userid):
 
 def setscore(userid, value):
 
-        Cursor.execute("UPDATE status SET SCORE = %s WHERE USERID = %s", (value, userid))
+        Cursor.execute("UPDATE statuss SET SCORE = %s WHERE USERID = %s", (value, userid))
         db.commit()
 
 
@@ -106,7 +106,7 @@ def error_reporter(userid, description):
 
 def checkrank(userid):
 
-        Cursor.execute(f"SELECT RANKED FROM status WHERE USERID = {userid}")
+        Cursor.execute(f"SELECT RANKED FROM statuss WHERE USERID = {userid}")
         Cloud = Cursor.fetchone()
         if Cloud[0] == "ADMIN":
             return True
@@ -120,7 +120,7 @@ def checkrank(userid):
 
 def getlevel(userid):
 
-        Cursor.execute(f"SELECT level FROM status WHERE userid = {userid}")
+        Cursor.execute(f"SELECT level FROM statuss WHERE userid = {userid}")
         Cloud = Cursor.fetchone()
         return Cloud[0]
 
@@ -132,7 +132,7 @@ def getlevel(userid):
 
 def getxp(userid):
 
-        Cursor.execute(f"SELECT xp,needed_xp FROM status WHERE userid = {userid}")
+        Cursor.execute(f"SELECT xp,needed_xp FROM statuss WHERE userid = {userid}")
         Cloud = Cursor.fetchall()
         #return a tuple
         return Cloud[0]
@@ -145,7 +145,7 @@ def getxp(userid):
 
 def upneedxp(userid):
 
-        Cursor.execute(f"""UPDATE status 
+        Cursor.execute(f"""UPDATE statuss 
                         SET needed_xp = needed_xp * 1.2 
                         WHERE USERID = {userid} """)
         db.commit()
@@ -160,7 +160,7 @@ def upneedxp(userid):
 
 def upxp(userid,value):
 
-        Cursor.execute("""UPDATE status 
+        Cursor.execute("""UPDATE statuss 
                         SET xp = %s
                         WHERE USERID = %s """,(value,userid))
         db.commit()
@@ -175,7 +175,7 @@ def upxp(userid,value):
 
 def uplevel(userid):
 
-        Cursor.execute(f"""UPDATE status 
+        Cursor.execute(f"""UPDATE statuss 
                         SET level = level + 1
                         WHERE USERID = {userid} """)
         db.commit()
@@ -189,7 +189,7 @@ def uplevel(userid):
 
 def downlevel(userid):
 
-        Cursor.execute(f"""UPDATE status 
+        Cursor.execute(f"""UPDATE statuss 
                         SET level = level - 1
                         WHERE USERID = {userid} """)
         db.commit()
@@ -203,7 +203,7 @@ def downlevel(userid):
 
 async def lotterysetter(mydic,namedic):
     for username , np in mydic.items():
-        Cursor.execute(f"""UPDATE status 
+        Cursor.execute(f"""UPDATE statuss 
                         SET wins = wins + 1
                         WHERE userid = {namedic[username]} """)
         db.commit()
@@ -211,32 +211,32 @@ async def lotterysetter(mydic,namedic):
         Cloud1 = int(Cloud[0])
         Cloud2 = int(Cloud[1])
         if Cloud1 == 1:
-            Cursor.execute("""UPDATE status 
+            Cursor.execute("""UPDATE statuss 
                         SET onenum = onenum + 1 , SCORE = SCORE + %s
                         WHERE userid = %s """,(Cloud2,namedic[username]))
             db.commit()
         elif Cloud1 == 2:
-            Cursor.execute("""UPDATE status 
+            Cursor.execute("""UPDATE statuss 
                         SET twonum = twonum + 1 , SCORE = SCORE + %s
                         WHERE userid = %s """,(Cloud2,namedic[username]))
             db.commit()
         elif Cloud1 == 4:
-            Cursor.execute("""UPDATE status 
+            Cursor.execute("""UPDATE statuss 
                         SET fournum = fournum + 1 , SCORE = SCORE + %s
                         WHERE userid = %s """,(Cloud2,namedic[username]))
             db.commit()
         elif Cloud1 == 5:
-            Cursor.execute("""UPDATE status 
+            Cursor.execute("""UPDATE statuss 
                         SET fivenum = fivenum + 1 , SCORE = SCORE + %s
                         WHERE userid = %s """,(Cloud2,namedic[username]))
             db.commit()
         elif Cloud1 == 6:
-            Cursor.execute("""UPDATE status 
+            Cursor.execute("""UPDATE statuss 
                         SET jackpot = jackpot + 1 , SCORE = SCORE + %s
                         WHERE userid = %s """,(Cloud2,namedic[username]))
             db.commit()
         elif Cloud1 == 3:
-            Cursor.execute("""UPDATE status 
+            Cursor.execute("""UPDATE statuss 
                         SET threenum = threenum + 1 , SCORE = SCORE + %s
                         WHERE userid = %s """,(Cloud2,namedic[username]))
             db.commit()
@@ -244,11 +244,10 @@ async def lotterysetter(mydic,namedic):
 
 
 
-
 #======================================================username updater======================================================
 
 def upname(userid,name):
-    Cursor.execute("UPDATE status SET usernames = %s WHERE USERID = %s", (name, userid))
+    Cursor.execute("UPDATE statuss SET usernames = %s WHERE USERID = %s", (name, userid))
     db.commit()
 
 
@@ -259,7 +258,7 @@ def upname(userid,name):
 
 
 async def lotterystatus(userid):
-    Cursor.execute(f"SELECT wins,onenum,twonum,threenum,fournum,fivenum,jackpot FROM status WHERE userid = {userid}")
+    Cursor.execute(f"SELECT wins,onenum,twonum,threenum,fournum,fivenum,jackpot FROM statuss WHERE userid = {userid}")
     Cloud = Cursor.fetchall()
     return Cloud[0]
 
@@ -268,15 +267,14 @@ async def lotterystatus(userid):
 #=====================================================mute log =======================================================================
 
 #this function will record the mute history !
-
 def muterecorder(userid_1,userid_2):
     #userid_1 kasi ke mute karde 
     #userid_2 kasi ke mute shode
-
+    print(type(datetime.now()))
     try:
-        Cursor.execute("INSERT INTO MUTES (byy,who,date) VALUES (%s,%s,%s)",(userid_1,userid_2,datetime.now()))
+        Cursor.execute("INSERT INTO mutes (byy,who,date) VALUES (%s,%s,%s)",(userid_1,userid_2,str(datetime.now())))
         db.commit()
     except:
-          Cursor.execute("""update mutes
-set much = much +1 , date = %s where byy = %s and who = %s""",(datetime.now(),userid_1,userid_2))
-          db.commit()
+        Cursor.execute("""update mutes
+        set much = much +1 , date = %s where byy = %s and who = %s""",(str(datetime.now()),userid_1,userid_2))
+        db.commit()

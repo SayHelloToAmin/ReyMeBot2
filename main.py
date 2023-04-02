@@ -20,13 +20,13 @@ from Show.lotterystatus import lstatus
 
 # Pyrogram Config : 
 
+
 app = Client(
     'Reyme',
     api_id=6703845,
     api_hash="3eac821a6d1e0b0e2969ae0ad2f970ea",
-    bot_token="1949862634:AAGWQyOS_0xKzD8FT1f1Ky3Gb9geoTmtByY"
+    bot_token="1949862634:AAFwtwsp3P-Q32qyOs0XA1mGebEK6fLRzIs"
 )
-
 
 # custom filter to check if user is banned
 async def check_banned_user(_, __, message):
@@ -60,6 +60,7 @@ async def group_message(client, message):
         '/pay': pay_command,
         '/admin': add_admin,
         '/mute@reymebot': mute_command,
+        "/mute":mute_command,
         "/lstatus" : lstatus,
         "/lstatus@reymebot" : lstatus,
         "/buyxp": xpbuy,
@@ -82,7 +83,6 @@ async def group_message(client, message):
 # private on message
 @app.on_message(filters.private)
 async def private_message(client, message):
-    print(text)
     text = message.text.split()
     commands = {
         "/start": second_start,
@@ -118,7 +118,7 @@ async def check_quest_answer(client, callback_query):
 
 # temp
 # quests
-scheduler.add_job(start_random_task, "interval", minutes=15, args=[app])
+scheduler.add_job(start_random_task, "interval", minutes=19, args=[app])
 scheduler.add_job(check_spam, "interval", seconds=7, args=[app])
 scheduler.add_job(addpm, "interval", minutes=25, args=[app])
 app.run()
