@@ -112,7 +112,14 @@ privatecom = {
 }
 
 
-
+privatecom2 = {
+    "help":SendHelp
+    
+    
+    
+    
+    
+}
 
 
 
@@ -121,6 +128,7 @@ privatecom = {
 
 @app.on_message(filters.private)
 async def private_message(client, message):
+    global privatecom , privatecom2
     text = message.text.lower().split()
     if text[0] == "/start" or text[0] == "/start@reymebot":
         if len(text) == 1:
@@ -129,19 +137,22 @@ async def private_message(client, message):
             if CheckUserID(message.from_user.id):
                 # all of start ==> commands will be here
                 #-----------------------------------------------------------------------------------------------------
-                if text[1] == "help":
-                    await SendHelp(client,message,text)
-                    
-                    
-                    
-                    
-                    
+                if text[1] in privatecom2:
+                    await privatecom2[text[1]](client, message, text)
                     
             #--------------------------------------------------------------------------------------------------------
             else:
                 message.reply(f"""😱| [{message.from_user.first_name}](tg://user?id={message.from_user.id}) چاقال 
                                         تو هنوز تو بات ثبت نشدی ! استارتش کون دیگه""")
-            
+    else:
+        is_reg = CheckUserID(message.from_user.id)
+        if (text[0] in privatecom.keys()) and not is_reg:
+            reg_text = f"""😱| [{message.from_user.first_name}](tg://user?id={message.from_user.id}) چاقال 
+                                        تو هنوز تو بات ثبت نشدی ! استارتش کون دیگه"""
+            await message.reply(reg_text)
+        else:
+            await add_user(message.from_user.id)
+            await privatecom[text[0].lower()](client, message, text)
 
     
 
