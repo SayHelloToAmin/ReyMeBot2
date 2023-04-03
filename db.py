@@ -6,9 +6,9 @@ from datetime import datetime
 # Connect to MySQL Server :
 db = mysql.connector.connect(
     host='localhost',
-    user="root",
-    password="khodeamin1400",
-    database="reymebot",
+    user="farhadb1_farhadb1",
+    password="KhodeAminHastam",
+    database="farhadb1_Reyme",
     # auth_plugin='mysql_native_password'
 
 )

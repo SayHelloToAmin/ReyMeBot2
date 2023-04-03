@@ -17,6 +17,7 @@ from Do.pay import *
 from Do.add_admin import *
 from Do.panel_system import *
 from Show.lotterystatus import lstatus
+from Show.toppm import TopPm
 from Show.help import *
 
 # Pyrogram Config :
@@ -67,7 +68,9 @@ commands = {
     "/mutedby": ShowMutedBy,
     "/mutedby@reymebot": ShowMutedBy,
     "/muted": ShowMuted,
-    "/muted@reymebot": ShowMuted
+    "/muted@reymebot": ShowMuted,
+    "/toppm" : TopPm,
+    "/toppm@reymebot" : TopPm
 
 }
 
