@@ -1,5 +1,5 @@
 from pyrogram import Client, filters
-
+from Show.muted_and_by import ShowMutedBy
 from Show.starts import *
 from etc.randomly import *
 from etc.Count import Counter1
@@ -17,7 +17,7 @@ from Do.pay import *
 from Do.add_admin import *
 from Do.panel_system import *
 from Show.lotterystatus import lstatus
-
+from Show.help import CheckGroupSend , SendHelp
 # Pyrogram Config : 
 
 
@@ -38,14 +38,13 @@ async def check_banned_user(_, __, message):
 spam_filter = filters.create(check_banned_user)
 
 
-@app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter)
-async def group_message(client, message):
-    await caller(message)
-    if CheckUserID(message.from_user.id):
-        if not isthattime:
-            await Counter1(message)
-    text = message.text.split()
-    commands = {
+
+
+
+#all of group commands
+
+
+commands = {
         "/start": first_start,
         "/start@reymebot": first_start,
         'جواب': check_math_quest,
@@ -64,9 +63,28 @@ async def group_message(client, message):
         "/lstatus" : lstatus,
         "/lstatus@reymebot" : lstatus,
         "/buyxp": xpbuy,
-        "/buyxp@reymebot" : xpbuy
+        "/buyxp@reymebot" : xpbuy,
+        "/help" : CheckGroupSend,
+        "/help@reymebot" : CheckGroupSend,
+        "/mutedby" : ShowMutedBy,
+        "/mutedby@reymebot":ShowMutedBy
 
     }
+
+
+
+
+
+
+
+@app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter)
+async def group_message(client, message):
+    await caller(message)
+    if CheckUserID(message.from_user.id):
+        if not isthattime:
+            await Counter1(message)
+    text = message.text.split()
+    global commands
     try:
         is_reg = CheckUserID(message.from_user.id)
         if (text[0].lower() in commands.keys()) and not is_reg:
@@ -77,21 +95,71 @@ async def group_message(client, message):
             await add_user(message.from_user.id)
             await commands[text[0].lower()](client, message, text)
     except Exception as e:
-        print(e)
+        pass
+
+
+
+
+
+
+
+privatecom = {
+    "/help" : SendHelp,
+    "/help@reymebot" : SendHelp
+    
+}
+
+
+
+
+
 
 
 # private on message
+
 @app.on_message(filters.private)
 async def private_message(client, message):
-    text = message.text.split()
-    commands = {
-        "/start": second_start,
-        "/start@reymebot": second_start
-    }
-    try:
-        await commands[text[0].lower()](client, message, text)
-    except:
-        pass
+    text = message.text.lower().split()
+    if text[0] == "/start" or text[0] == "/start@reymebot":
+        if len(text) == 1:
+            await second_start(client,message)
+        else:
+            if CheckUserID(message.from_user.id):
+                # all of start ==> commands will be here
+                #-----------------------------------------------------------------------------------------------------
+                if text[1] == "help":
+                    await SendHelp(client,message,text)
+                    
+                    
+                    
+                    
+                    
+                    
+            #--------------------------------------------------------------------------------------------------------
+            else:
+                message.reply(f"""😱| [{message.from_user.first_name}](tg://user?id={message.from_user.id}) چاقال 
+                                        تو هنوز تو بات ثبت نشدی ! استارتش کون دیگه""")
+            
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # For random quests which need buttons
@@ -113,7 +181,28 @@ async def check_quest_answer(client, callback_query):
         else:
             await commands[data[0]](client, callback_query, data)
     except Exception as e:
-        print(e)
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # temp

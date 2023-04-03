@@ -46,7 +46,7 @@ async def mylevel(Client,Message,text):
                     else:
                         await Message.reply(f"سرورم این یارو لولش {Cloud[4]} تاس")
                 else:
-                    await Message.reply(f"😱| {Message.reply_to_message.from_user.first_name} چاقال هنوز ثبت نام نکرده ...")    
+                    await Message.reply(f"😱|این  {Message.reply_to_message.from_user.first_name} چاقال هنوز ثبت نام نکرده ...")
             else:
                 await Message.reply("بتوچه بچه کونی")
         else:

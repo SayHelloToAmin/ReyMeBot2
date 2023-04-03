@@ -270,11 +270,34 @@ async def lotterystatus(userid):
 def muterecorder(userid_1,userid_2):
     #userid_1 kasi ke mute karde 
     #userid_2 kasi ke mute shode
-    print(type(datetime.now()))
     try:
-        Cursor.execute("INSERT INTO mutes (byy,who,date) VALUES (%s,%s,%s)",(userid_1,userid_2,str(datetime.now())))
+        Cursor.execute("INSERT INTO mutes (byy,who,datee) VALUES (%s,%s,%s)",(userid_1,userid_2,datetime.now()))
         db.commit()
     except:
         Cursor.execute("""update mutes
-        set much = much +1 , date = %s where byy = %s and who = %s""",(str(datetime.now()),userid_1,userid_2))
+        set much = much +1 , datee = %s where byy = %s and who = %s""",(datetime.now(),userid_1,userid_2))
         db.commit()
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+#====================================================muted by==========================================================================
+
+#this function only return a number than is count of muted by a special user in with we want
+
+def mutedby(userid1,userid2):
+    Cursor.execute("""SELECT much , datee from mutes
+where byy = %s and who = %s""",(userid2,userid1))
+    Cloud = Cursor.fetchone()
+    if not Cloud:
+        return False
+    else:
+        return Cloud

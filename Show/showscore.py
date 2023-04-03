@@ -23,7 +23,7 @@ async def score_shower(Client, Message, text):
                     await Message.reply(f"""{Message.reply_to_message.from_user.first_name} 
                     درحال حاضر {Cloud3} امتیاز داره 🤡""")
                 else:
-                    await Message.reply(f"هنوز ثبت نام نکرده😱{Message.reply_to_message.from_user.first_name} ")
+                    await Message.reply(f"😱|این  {Message.reply_to_message.from_user.first_name} چاقال هنوز ثبت نام نکرده ...")
             else:
                 Cloud3 = db.give_score(Cloud)
                 await Message.reply(f" پدسگ در حال حاضر {Cloud3} امتیاز داری 😱")

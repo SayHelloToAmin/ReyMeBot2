@@ -13,7 +13,7 @@ async def first_start(Client,Message,Text):
 
 # Handle /start In Bot Pv (Register User Or Not If he is already registered)
 
-async def second_start(Client,Message,Text):
+async def second_start(Client,Message):
         if db.CheckUserID(Message.from_user.id):
             await Client.send_message(chat_id=Message.from_user.id,text=f"جناپ [{Message.from_user.first_name}](tg://user?id={Message.from_user.id}) عزیز شما همین الانشم تو ربات ثبت شدین 😱")
         else:

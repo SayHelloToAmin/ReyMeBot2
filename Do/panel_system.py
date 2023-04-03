@@ -27,7 +27,7 @@ async def validate_to_user(user_id: int, to_user_id: int, client=None, message=N
     user_level = getlevel(user_id)
     text = ''
     if not is_reg:
-        text = f"هنوز ثبت نام نکرده😱{message.reply_to_message.from_user.first_name} "
+        text = f"😱|این  {message.reply_to_message.from_user.first_name} چاقال هنوز ثبت نام نکرده ..."
 
     elif getlevel(to_user_id) > user_level:
         text = '🫡 |کسی که میخوای میوتش کنی لولش از تو بالاتره !'

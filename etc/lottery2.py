@@ -19,7 +19,7 @@ wnameid = {}
 async def run_lottery(Client,Message):
     await Client.send_message(Message.chat.id,"⏱ |  فرصت ارسال تموم شد ! در حال بررسی جواب ها ! 🔥")
     global participants, lottery_numbers, lottery_started , last_lottery , lottext,winners , nameid , wnameid
-    lottery_numbers = random.sample(range(0, 40), 6)
+    lottery_numbers = random.sample(range(0, 31), 6)
     for username, user_numbers in participants.items():
         correct_guesses = len(set(user_numbers) & set(lottery_numbers))
         if correct_guesses == 0:
@@ -57,11 +57,11 @@ async def run_lottery(Client,Message):
 
 async def startlot(Client,Message,text):
     global participants, lottery_numbers, lottery_started , last_lottery
-    await Message.reply("""🥳 | لاتاری با موفقیت شروع شد !!! از بین 0 تا 40 باید 6 عدد رو حدس بزنید و بفرستید ! 
+    await Message.reply("""🥳 | لاتاری با موفقیت شروع شد !!! از بین 0 تا 30 باید 6 عدد رو حدس بزنید و بفرستید ! 
 ⏳| حواستون باشه فقط 20 دقیقه فرصت دارین عدد های خودتونو بفرستین !
 
 
-💵 | ورودی هر نفر 40 امتیاز و جایزه کسی که هر 6 عدد رو درست حدس بزنه 10000 امتیاز هست ! 
+💵 | ورودی هر نفر 80 امتیاز و جایزه کسی که هر 6 عدد رو درست حدس بزنه 10000 امتیاز هست ! 
 【 به هر حال به کسانی که حتی یک عدد رو درست حدس زدن جایزه داده میشود و به ازای هر شرکت کننده به جایزه ها 40 پوینت اضافه میشود 】
 ⍡ برای ارسال اعداد خود میتوانید از این مثال استفاده کنید 
 
@@ -100,20 +100,20 @@ async def first(Client,Message,text):
                 await startlot(Client,Message,text)
             else:
                 await Message.reply(f"""🫠 | متاسفانه فعلا نمیتونم لاتاری بعدیو استارت کنم !
-                  تا لاتاری بعدی ⥆ {round((1200-(now-last_lottery))/60)} min  ☫ """)
+                  تا لاتاری بعدی ⥆ {round((1200-(now-last_lottery))/60)} min  卐 """)
     else:
         if lottery_started:
             try:
                 user_numbers = list(map(int, Message.text.split()[1:]))
                 if len(user_numbers) != 6 :
-                    raise ValueError("❗️ | شما باید دقیقا 6 عدد را از بین 0 تا 40 انتخاب کنید !")
+                    raise ValueError("❗️ | شما باید دقیقا 6 عدد را از بین 0 تا 30 انتخاب کنید !")
                 for num in user_numbers:
-                    if num < 0 or num > 40:
-                        raise ValueError("❗️ | شما باید عداد را از بین 0 تا 40 انتخاب کنید !")
+                    if num < 0 or num > 30:
+                        raise ValueError("❗️ | شما باید عداد را از بین 0 تا 30 انتخاب کنید !")
                 # add the user's numbers to the list of participants
                 if not Message.from_user.first_name in participants.keys():
                     participants[Message.from_user.first_name] = user_numbers
-                    await subtraction(Message.from_user.id,40.0)
+                    await subtraction(Message.from_user.id,80.0)
                     await Client.send_message(Message.chat.id, f"📝✿ | اعداد {Message.from_user.first_name} با موفقیت ثبت شدند! ⬱{user_numbers}")
                     nameid[Message.from_user.first_name] = Message.from_user.id
                 else:

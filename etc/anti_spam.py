@@ -24,7 +24,7 @@ async def reduce_user_scores(user_id: int) -> float:
     current_time = time.time()
     banned_users[user_id] = current_time + 300
     count_user_messages = len(user_dict[user_id])
-    score_to_reduce = count_user_messages * 0.45
+    score_to_reduce = count_user_messages * 10
     await subtraction(user_id, score_to_reduce)
     return score_to_reduce
 

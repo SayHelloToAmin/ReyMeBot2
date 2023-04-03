@@ -27,7 +27,7 @@ async def lstatus(Client,Message,text):
                 status = await lotterystatus(Message.reply_to_message.from_user.id)
                 await Message.reply(textt.format(first=Message.reply_to_message.from_user.first_name,id=Message.reply_to_message.from_user.id,game=status[0],one=status[1],two=status[2],three=status[3],four=status[4],five=status[5],jack=status[6]))
             else:
-                await Message.reply(f"😱| {Message.reply_to_message.from_user.first_name} چاقال هنوز ثبت نام نکرده ...")
+                await Message.reply(f"😱|این  {Message.reply_to_message.from_user.first_name} چاقال هنوز ثبت نام نکرده ...")
         else:
             await Message.reply("Access Denied ! ")
     else:
