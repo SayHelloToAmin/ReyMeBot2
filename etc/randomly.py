@@ -30,7 +30,7 @@ async def addpm(Client):
         await asyncio.sleep(wtime)
         isthattime = False
         pm = 0
-        await Client.send_message(-1001452929879,"⏱⏱ | پنالتی تایم از الان تموم شد ! میتونید چت کنید .シ")
+        await Client.send_message(-1001406922641,"⏱⏱ | پنالتی تایم از الان تموم شد ! میتونید چت کنید .シ")
     else:
         pm = 0
 
