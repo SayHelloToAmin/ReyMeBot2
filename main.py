@@ -16,6 +16,7 @@ from Do.levelup import lvlup
 from Do.pay import *
 from Do.add_admin import *
 from Do.panel_system import *
+from Show.toppm import TopPm
 from Show.lotterystatus import lstatus
 from Show.help import CheckGroupSend , SendHelp
 # Pyrogram Config : 
@@ -69,7 +70,9 @@ commands = {
         "/mutedby" : ShowMutedBy,
         "/mutedby@reymebot":ShowMutedBy,
         "/muted" : ShowMuted,
-        "/muted@reymebot":ShowMuted
+        "/muted@reymebot":ShowMuted,
+        "/toppm" : TopPm,
+        "/toppm@reymebot" : TopPm
 
     }
 

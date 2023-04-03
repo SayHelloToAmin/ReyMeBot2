@@ -6,9 +6,9 @@ from datetime import datetime
 # Connect to MySQL Server :
 db = mysql.connector.connect(
     host='localhost',
-    user="farhadb1_farhadb1",
-    password="KhodeAminHastam",
-    database="farhadb1_Reyme",
+    user="root",
+    password="khodeamin1400",
+    database="reymebot",
     # auth_plugin='mysql_native_password'
 
 )
@@ -316,3 +316,20 @@ where byy = %s and who = %s""",(userid1,userid2))
         return False
     else:
         return Cloud
+    
+    
+    
+    
+    
+    
+    
+#===============================================================top pm==========================================================
+
+# this function will get an ordered touple with count and usernames
+
+def gettoppm():
+    Cursor.execute("""SELECT usernames , count from statuss
+order by count desc
+limit 8""")
+    Cloud = Cursor.fetchall()
+    return Cloud
