@@ -291,11 +291,26 @@ def muterecorder(userid_1,userid_2):
         
 #====================================================muted by==========================================================================
 
-#this function only return a number than is count of muted by a special user in with we want
+#this function only return a number as count and last date 
 
 def mutedby(userid1,userid2):
     Cursor.execute("""SELECT much , datee from mutes
 where byy = %s and who = %s""",(userid2,userid1))
+    Cloud = Cursor.fetchone()
+    if not Cloud:
+        return False
+    else:
+        return Cloud
+    
+
+
+##=====================================================muted========================================================================
+
+#this function only return a number as count and last date 
+
+def muted(userid1,userid2):
+    Cursor.execute("""SELECT much , datee from mutes
+where byy = %s and who = %s""",(userid1,userid2))
     Cloud = Cursor.fetchone()
     if not Cloud:
         return False

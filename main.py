@@ -1,5 +1,5 @@
 from pyrogram import Client, filters
-from Show.muted_and_by import ShowMutedBy
+from Show.muted_and_by import ShowMutedBy , ShowMuted
 from Show.starts import *
 from etc.randomly import *
 from etc.Count import Counter1
@@ -67,7 +67,9 @@ commands = {
         "/help" : CheckGroupSend,
         "/help@reymebot" : CheckGroupSend,
         "/mutedby" : ShowMutedBy,
-        "/mutedby@reymebot":ShowMutedBy
+        "/mutedby@reymebot":ShowMutedBy,
+        "/muted" : ShowMuted,
+        "/muted@reymebot":ShowMuted
 
     }
 
