@@ -333,3 +333,15 @@ order by count desc
 limit 8""")
     Cloud = Cursor.fetchall()
     return Cloud
+
+
+
+
+#==========================================================ChatGPT counter==========================================
+
+#this function only count the accepted answers of users
+
+def countchatgpt(userid):
+    Cursor.execute(f"""UPDATE statuss 
+SET chatgpt = chatgpt + 1 WHERE USERID = {userid}""")
+    db.commit()

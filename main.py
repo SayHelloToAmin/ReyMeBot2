@@ -3,7 +3,7 @@ from Show.muted_and_by import ShowMutedBy, ShowMuted
 from Show.starts import *
 from etc.randomly import *
 from etc.Count import Counter1
-from etc.randomly import addpm, pm, isthattime
+from etc.randomly import addpm, isthattime
 from etc.anti_spam import *
 from Do.buyxp import xpbuy
 from Show.showscore import score_shower
@@ -19,7 +19,8 @@ from Do.panel_system import *
 from Show.lotterystatus import lstatus
 from Show.toppm import TopPm
 from Show.help import *
-
+from etc.Chatgpt import   answer_handler ,send_question
+import re
 # Pyrogram Config :
 
 
@@ -74,15 +75,38 @@ commands = {
 
 }
 
-
+english_regex = re.compile(r'^[a-zA-Z0-9\s]+$')
 @app.on_message(filters.group & ~filters.channel & ~filters.bot & filters.text & spam_filter)
 async def group_message(client, message):
+    global english_regex , current_question,commands
+    
     await caller(message)
+    
     if CheckUserID(message.from_user.id):
         if not isthattime:
             await Counter1(message)
+
+    
+
+    from etc.Chatgpt import current_question
+    try:
+        if message.reply_to_message.id == current_question.id:
+            if CheckUserID(message.from_user.id):
+                if english_regex.match(message.text):
+                    await answer_handler(client,message)
+                else:
+                    await message.reply("ᴘʟᴇᴀꜱᴇ ᴜꜱᴇ ᴇɴɢʟɪꜱʜ ꜰᴏɴᴛ ᴏɴʟʏ!")
+            else:
+                reg_text = f"""😱| [{message.from_user.first_name}](tg://user?id={message.from_user.id}) چاقال 
+                                            تو هنوز تو بات ثبت نشدی ! استارتش کون دیگه"""
+                await message.reply(reg_text)
+    except:
+        pass
+
     text = message.text.split()
-    global commands
+
+
+
     try:
         is_reg = CheckUserID(message.from_user.id)
         if (text[0].lower() in commands.keys()) and not is_reg:
@@ -139,6 +163,9 @@ async def private_message(client, message):
             await privatecom[text[0].lower()](client, message, text)
 
 
+
+
+
 # For random quests which need buttons
 @app.on_callback_query(spam_filter)
 async def check_quest_answer(client, callback_query):
@@ -167,4 +194,5 @@ async def check_quest_answer(client, callback_query):
 scheduler.add_job(start_random_task, "interval", minutes=19, args=[app])
 scheduler.add_job(check_spam, "interval", seconds=7, args=[app])
 scheduler.add_job(addpm, "interval", minutes=25, args=[app])
+scheduler.add_job(send_question, "interval", minutes=30, args=[app,-1001452929879])
 app.run()
