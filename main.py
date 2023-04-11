@@ -198,6 +198,6 @@ async def check_quest_answer(client, callback_query):
 scheduler.add_job(start_random_task, "interval", minutes=19, args=[app])
 scheduler.add_job(check_spam, "interval", seconds=7, args=[app])
 scheduler.add_job(addpm, "interval", minutes=25, args=[app])
-scheduler.add_job(send_question, "interval", minutes=30, args=[app,-1001452929879])
+scheduler.add_job(send_question, "interval", minutes=30, args=[app, -1001452929879])
 scheduler.add_job(check_afk_xo, "interval", minutes=2, args=[app])
 app.run()

@@ -282,7 +282,7 @@ async def is_game_equal(board: list) -> bool:
     empty_place = 0
     for row in board:
         empty_place += row.count(' ')
-    if empty_place >= 42:
+    if empty_place <= 42:
         return True
     return False
 
@@ -298,10 +298,10 @@ async def check_afk_xo(client: Client) -> None:
             turn = game[0]
             afk_player = await client.get_users(turn)
             winner = price[2] if price[1] == turn else price[1]
-            await addiction(winner, price[0] * 2)
             winner = await client.get_users(winner)
             is_equal = await is_game_equal(game[1])
             if not is_equal:
+                await addiction(winner.id, price[0] * 2)
                 await client.send_message(-1001452929879,
                                           f"بازیکن {afk_player.first_name} به دلیل بازی نکردن بعد از 2 دقیقه باخت و {price[0]} امتیاز به {winner.first_name} رسید ")
             await client.delete_messages(-1001452929879, gid)
