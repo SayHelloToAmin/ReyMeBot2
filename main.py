@@ -19,6 +19,7 @@ from Do.panel_system import *
 from Show.lotterystatus import lstatus
 from Show.toppm import TopPm
 from Show.help import *
+from Do.xo import *
 from etc.Chatgpt import   answer_handler ,send_question
 import re
 # Pyrogram Config :
@@ -71,7 +72,8 @@ commands = {
     "/muted": ShowMuted,
     "/muted@reymebot": ShowMuted,
     "/toppm" : TopPm,
-    "/toppm@reymebot" : TopPm
+    "/toppm@reymebot" : TopPm,
+    '/xo': xo_verify,
 
 }
 
@@ -117,7 +119,7 @@ async def group_message(client, message):
             await add_user(message.from_user.id)
             await commands[text[0].lower()](client, message, text)
     except Exception as e:
-        pass
+        print(e)
 
 
 privatecom = {
@@ -175,7 +177,9 @@ async def check_quest_answer(client, callback_query):
         'mute_confirm': confirm_mute_user,
         'back_mute': back_method,
         'mute_user': mute_user,
-        'help': help_page
+        'help': help_page,
+        'xo_start': xo_send,
+        'xo': edit_xo,
     }
     try:
         is_reg = CheckUserID(callback_query.from_user.id)
@@ -195,4 +199,5 @@ scheduler.add_job(start_random_task, "interval", minutes=19, args=[app])
 scheduler.add_job(check_spam, "interval", seconds=7, args=[app])
 scheduler.add_job(addpm, "interval", minutes=25, args=[app])
 scheduler.add_job(send_question, "interval", minutes=30, args=[app,-1001452929879])
+scheduler.add_job(check_afk_xo, "interval", minutes=2, args=[app])
 app.run()
