@@ -353,7 +353,7 @@ SET chatgpt = chatgpt + 1 WHERE USERID = {userid}""")
 def xocount(*userid):
     for user in userid:
         Cursor.execute(f"""UPDATE statuss 
-SET xo_games = xo_games + 1 WHERE USERID = {userid}""")
+SET xo_games = xo_games + 1 WHERE USERID = {user}""")
     db.commit()
 #========================================================Record XO result=============================================
 

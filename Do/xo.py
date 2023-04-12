@@ -72,7 +72,7 @@ async def xo_verify(client: Client, message: Message, text):
                 await client.send_message(message.chat.id,
                                           f"""🎮 | یک درخواست بازی با شرط {score} امتیاز توسط {user_first_name} ارسال شده است !
     📊 | تعداد بازی های {user_first_name} : {games} 
-    📈 | درصد برد : {winr}
+    📈 | درصد برد : %{winr}
     ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
     برای قبول درخواست و ورود به بازی کلیک کنید⤺""", reply_markup=markup)
 
@@ -120,7 +120,7 @@ async def xo_send(_, callback_query: CallbackQuery, data):
                     player_1_id: int = int(data[2])
                     player_1_name: str = data[3]
                     player_2 = callback_query.from_user
-                    text = f'Player 1 Choose 🔴 {player_1_name}'
+                    text = f'📍 | اولین حرکت با {player_1_name} ⚪️ شروع میشه ! انتخاب کن ⤺'
 
                     # Final Validation To Check Players Score And If Passed Reduce Their Scores
                     is_passed = await reduce_scores(score, player_1_id, player_1_name, player_2.first_name, player_2.id)
@@ -254,7 +254,7 @@ async def delete_game(game_id: int) -> None:
 
 async def update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji, reply_markup):
     await callback_query.edit_message_text(
-        f"1 - ({player_1_name}) 🔴\n2 - ({player_2_name}) 🔵\n\n**نوبت:** {next_turn_name} {next_turn_emoji}",
+        f"1 - ({player_1_name}) ⚪️\n2 - ({player_2_name}) ⚫️\n\n**نوبت:** {next_turn_name} {next_turn_emoji}",
         reply_markup=reply_markup)
 
 
@@ -274,8 +274,8 @@ async def edit_xo(client, callback_query, data):
         columon: int = int_data[4]
         player_1_name: str = game[2]
         player_2_name: str = game[3]
-        turn_emoji: str = '🔴' if player_1 == turn else '🔵'
-        next_turn_emoji: str = '🔵' if player_1 == turn else '🔴'
+        turn_emoji: str = '⚪️' if player_1 == turn else '🔵'
+        next_turn_emoji: str = '⚫️' if player_1 == turn else '⚫️'
 
         if turn == callback_query.from_user.id:
             if xo_spam[game_id]:
@@ -316,14 +316,14 @@ async def edit_xo(client, callback_query, data):
                         xo_game[game_id] = [next_turn, board, player_1_name, player_2_name, now]
                     xo_spam[game_id] = True
                 else:
-                    await callback_query.answer('این دکمه از قبل انتخاب شده', show_alert=True)
+                    await callback_query.answer("این خونه از قبل انتخاب شده", show_alert=True)
             else:
-                await callback_query.answer('اسپم نکن دوست گرامی', show_alert=True)
+                await callback_query.answer('صبر کن تا درخواست قبلیت انجام شه !', show_alert=True)
         else:
-            await callback_query.answer('نوبتت نیست گل', show_alert=True)
+            await callback_query.answer('هنوز نوبت تو نشده ‼️', show_alert=True)
 
     else:
-        await callback_query.answer('برو دنبال درسو مشقت', show_alert=True)
+        await callback_query.answer('تو فقط یه تماشاچی ای ❕❗️', show_alert=True)
 
 
 async def is_game_equal(board: list) -> bool:
@@ -348,10 +348,13 @@ async def check_afk_xo(client: Client) -> None:
             winner = price[2] if price[1] == turn else price[1]
             winner = await client.get_users(winner)
             is_equal = await is_game_equal(game[1])
+            xocount(winner.id,afk_player.id)
+            recxo(winner.id,afk_player.id,price[0]*2)
             if not is_equal:
                 await addiction(winner.id, price[0] * 2)
+                
                 await client.send_message(-1001452929879,
-                                          f"بازیکن {afk_player.first_name} به دلیل بازی نکردن بعد از 2 دقیقه باخت و {price[0] * 2} امتیاز به {winner.first_name} رسید ")
+                                          f"💤 | متاسفانه بازیکن {afk_player.first_name} به دلیل AFK از بازی خارج و {price[0]*2} امتیاز به {winner.first_name} رسید ! ")
             else:
                 # Give Scores Back If Game Is Equal
                 await addiction(winner.id, price[0])
