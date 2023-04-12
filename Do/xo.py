@@ -254,7 +254,7 @@ async def delete_game(game_id: int) -> None:
 
 async def update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji, reply_markup):
     await callback_query.edit_message_text(
-        f"1 - ({player_1_name}) ❌\n2 - ({player_2_name}) ⭕️\n\n**نوبت:** {next_turn_name} {next_turn_emoji}",
+        f"1 - ({player_1_name}) 🔴\n2 - ({player_2_name}) 🔵\n\n**نوبت:** {next_turn_name} {next_turn_emoji}",
         reply_markup=reply_markup)
 
 
