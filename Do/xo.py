@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from pyrogram.types import (Message, CallbackQuery, InlineKeyboardMarkup,
                             InlineKeyboardButton)
-from db import give_score , recxo
+from db import give_score , recxo , xo_winrate ,xocount , xogames
 from etc.Addition_and_subtraction import subtraction, addiction
 
 import random
@@ -41,25 +41,43 @@ async def create_verify_xo_keyboard(score: int, user_id: int, user_first_name: s
 
 
 async def xo_verify(client: Client, message: Message, text):
+    print(text)
+    user_id = message.from_user.id
+    user_score = give_score(user_id)
     try:
         score = int(text[1])
+        if score <= 0:
+            score = "wrong"
     except Exception as e:
-        pass
-        score = False
-    if score:
-        user_id = message.from_user.id
-        user_score = give_score(user_id)
-        if user_score > score:
+        try:
+            if text[1] == "*":
+                score = user_score
+            else:
+                raise ValueError
+        except:
+            score = False
+            pass
+
+    if type(score) is int or type(score) is float:
+        if user_score >= score:
             user_first_name = message.from_user.first_name
             markup = await create_verify_xo_keyboard(score, user_id, user_first_name)
-            await client.send_message(message.chat.id,
-                                      f"بازیکن {user_first_name} درخواست شروع یک دوز داده برای شرکت در بازی و "
-                                      f"گذاشتن {score} امتیاز وسط رو دکمه زیر کلیک کنید", reply_markup=markup)
+            winr = await xo_winrate(user_id)
+            games = await xogames(user_id)
+            await client.send_message(message.chat.id,f"""🎮 | یک درخواست بازی با شرط {score} امتیاز توسط {user_first_name} ارسال شده است !
+📊 | تعداد بازی های {user_first_name} : {games} 
+📈 | درصد برد : {winr}
+┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+برای قبول درخواست و ورود به بازی کلیک کنید⤺""", reply_markup=markup)
 
         else:
             await message.reply(f'امتیاز کافی ندارید. امتیاز شما: {user_score}')
+    elif score == "wrong":
+        await message.reply("‼️ | لطفا از فرمت درست و اعداد طبیعی استفاده کنید !")
     else:
-        await message.reply('عدد صحیح وارد کنید')
+        await message.reply(f"""❕ | برای شروع بازی از این فرمت استفاده کنید ⤺ 
+Ex) /xo <تعداد امتیاز شرط>
+🔆 | نکته : میتونی از * برای شرط کل امتیاز هات به جای تعداد امتیاز شرط استفاده کنی ! امتیاز شما : {user_score} """)
 
 async def reduce_scores(score, user_id, user_first_name, to_user_name, to_user_id) -> Union[str, bool]:
     to_user_score = give_score(to_user_id)
@@ -78,10 +96,10 @@ async def reduce_scores(score, user_id, user_first_name, to_user_name, to_user_i
 
 async def xo_send(_, callback_query: CallbackQuery, data):
     if callback_query.from_user.id != int(data[2]):
-        score = int(data[1])
+        score = float(data[1])
         to_user_score = give_score(callback_query.from_user.id)
         if to_user_score >= score:
-            game_id = await callback_query.edit_message_text('درحال اماده سازی بازی')
+            game_id = await callback_query.edit_message_text("|درحال آماده سازی تیبل . . .|")
             game_id = game_id.id
             board = [[' ', ' ', ' ', ' ', ' ', ' ', ' '],
                      [' ', ' ', ' ', ' ', ' ', ' ', ' '],
@@ -93,7 +111,7 @@ async def xo_send(_, callback_query: CallbackQuery, data):
             player_1_id = int(data[2])
             player_1_name = data[3]
             player_2 = callback_query.from_user
-            text = f'Player 1 Choose 🔴 {player_1_name}'
+            text = f'Player 1 Choose ❌ {player_1_name}'
 
             # Final Validation To Check Players Score And If Passed Reduce Their Scores
             is_passed = await reduce_scores(score, player_1_id, player_1_name, player_2.first_name, player_2.id)
@@ -223,7 +241,7 @@ async def delete_game(game_id: int) -> None:
 
 
 async def edit_xo(client, callback_query, data):
-    global xo_game
+    global xo_game , xo_price
     await asyncio.sleep(random.uniform(0.300, 0.500))
 
     int_data = list(map(int, data[1:6]))  # Turn needed CallBacks to Int
@@ -237,8 +255,8 @@ async def edit_xo(client, callback_query, data):
     player_2: int = int_data[2]
     player_1_name: str = game[2]
     player_2_name: str = game[3]
-    turn_emoji: str = '🔴' if player_1 == turn else '🔵'
-    next_turn_emoji = '🔵' if player_1 == turn else '🔴'
+    turn_emoji: str = '❌' if player_1 == turn else '⭕️'
+    next_turn_emoji = '⭕️' if player_1 == turn else '❌'
     if callback_query.from_user.id in (player_2, player_1):
         if turn == callback_query.from_user.id:
             if xo_spam[game_id]:
@@ -254,6 +272,7 @@ async def edit_xo(client, callback_query, data):
                             f"بازیکن {winner_user.first_name} {turn_emoji} برنده {win_price} امتیاز شد 🎉",
                             reply_markup=reply_markup)
                         await addiction(winner_user.id, win_price)
+                        xocount(player_1,player_2)
                         if callback_query.from_user.id == player_1:
                             recxo(player_1,player_2,win_price)
                         else:
@@ -264,7 +283,7 @@ async def edit_xo(client, callback_query, data):
                         reply_markup = await create_xo_board(board, game_id, player_1, player_2)
                         next_turn_name = player_2_name if player_1 == turn else player_1_name
                         await callback_query.edit_message_text(
-                            f"1 - ({player_1_name}) 🔴\n2 - ({player_2_name}) 🔵\n\n**نوبت:** {next_turn_name} {next_turn_emoji}",
+                            f"1 - ({player_1_name}) ❌\n2 - ({player_2_name}) ⭕️\n\n**نوبت:** {next_turn_name} {next_turn_emoji}",
                             reply_markup=reply_markup)
                         next_turn = player_2 if turn == player_1 else player_1
                         now = time.time()

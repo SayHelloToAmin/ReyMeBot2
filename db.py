@@ -346,7 +346,15 @@ def countchatgpt(userid):
 SET chatgpt = chatgpt + 1 WHERE USERID = {userid}""")
     db.commit()
 
+#====================================================Record XO game count============================================
 
+#this function only record games count
+
+def xocount(*userid):
+    for user in userid:
+        Cursor.execute(f"""UPDATE statuss 
+SET xo_games = xo_games + 1 WHERE USERID = {userid}""")
+    db.commit()
 #========================================================Record XO result=============================================
 
 #this function just record the result of XO games for each player
@@ -362,3 +370,39 @@ def recxo(userid1,userid2,wonmoney):
         Cursor.execute("""update xo_games
         set much = much +1 , wonmoney = wonmoney + %s where winner = %s and loser = %s""",(wonmoney,userid1,userid2))
         db.commit()
+
+
+# ========================================== xo games and wins and loses ===============================================
+
+# the following functions will return xo games , wins , loses the player in XO game!
+
+# games
+async def xogames(userid):
+    Cursor.execute(f"SELECT xo_games FROM statuss where userid = {userid}")
+    Cloud = Cursor.fetchone()
+    return Cloud[0]
+
+# wins
+async def xowins(userid):
+    Cursor.execute(f"""select sum(much) from xo_games where winner = {userid} 
+group by winner""")
+    Cloud = Cursor.fetchone()
+    return Cloud[0]
+
+#loses
+async def xoloses(userid):
+    Cursor.execute(f"""select sum(much) from xo_games where loser = {userid} 
+group by winner""")
+    Cloud = Cursor.fetchone()
+    return Cloud[0]
+
+
+#=================================================show winRate(xo) =======================================
+
+#this function will return the player's winrate on XO
+
+async def xo_winrate(userid):
+    Cloud1 = await xogames(userid)
+    if Cloud1:
+        Cloud2 = await xowins(userid)
+        return round((Cloud2/Cloud1)* 100)
