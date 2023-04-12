@@ -351,7 +351,7 @@ async def check_afk_xo(client: Client) -> None:
             if not is_equal:
                 await addiction(winner.id, price[0] * 2)
                 await client.send_message(-1001452929879,
-                                          f"بازیکن {afk_player.first_name} به دلیل بازی نکردن بعد از 2 دقیقه باخت و {price[0]} امتیاز به {winner.first_name} رسید ")
+                                          f"بازیکن {afk_player.first_name} به دلیل بازی نکردن بعد از 2 دقیقه باخت و {price[0] * 2} امتیاز به {winner.first_name} رسید ")
             else:
                 # Give Scores Back If Game Is Equal
                 await addiction(winner.id, price[0])
