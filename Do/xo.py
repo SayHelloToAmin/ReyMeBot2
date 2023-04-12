@@ -330,7 +330,7 @@ async def is_game_equal(board: list) -> bool:
     empty_place = 0
     for row in board:
         empty_place += row.count(' ')
-    if empty_place <= 49:
+    if empty_place <= 2:
         return True
     return False
 
