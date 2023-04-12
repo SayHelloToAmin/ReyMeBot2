@@ -1,7 +1,7 @@
 from pyrogram import Client, filters
 from pyrogram.types import (Message, CallbackQuery, InlineKeyboardMarkup,
                             InlineKeyboardButton)
-from db import give_score
+from db import give_score , recxo
 from etc.Addition_and_subtraction import subtraction, addiction
 
 import random
@@ -254,7 +254,10 @@ async def edit_xo(client, callback_query, data):
                             f"بازیکن {winner_user.first_name} {turn_emoji} برنده {win_price} امتیاز شد 🎉",
                             reply_markup=reply_markup)
                         await addiction(winner_user.id, win_price)
-
+                        if callback_query.from_user.id == player_1:
+                            recxo(player_1,player_2,win_price)
+                        else:
+                            recxo(player_2,player_1,win_price)
                         await delete_game(game_id)
                         print('deleted')
                     else:

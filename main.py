@@ -20,7 +20,7 @@ from Show.lotterystatus import lstatus
 from Show.toppm import TopPm
 from Show.help import *
 from Do.xo import *
-from etc.Chatgpt import   answer_handler ,send_question
+
 import re
 # Pyrogram Config :
 
@@ -90,20 +90,20 @@ async def group_message(client, message):
 
     
 
-    from etc.Chatgpt import current_question
-    try:
-        if message.reply_to_message.id == current_question.id:
-            if CheckUserID(message.from_user.id):
-                if english_regex.match(message.text):
-                    await answer_handler(client,message)
-                else:
-                    await message.reply("ᴘʟᴇᴀꜱᴇ ᴜꜱᴇ ᴇɴɢʟɪꜱʜ ꜰᴏɴᴛ ᴏɴʟʏ!")
-            else:
-                reg_text = f"""😱| [{message.from_user.first_name}](tg://user?id={message.from_user.id}) چاقال 
-                                            تو هنوز تو بات ثبت نشدی ! استارتش کون دیگه"""
-                await message.reply(reg_text)
-    except:
-        pass
+    # from etc.Chatgpt import current_question
+    # try:
+    #     if message.reply_to_message.id == current_question.id:
+    #         if CheckUserID(message.from_user.id):
+    #             if english_regex.match(message.text):
+    #                 await answer_handler(client,message)
+    #             else:
+    #                 await message.reply("ᴘʟᴇᴀꜱᴇ ᴜꜱᴇ ᴇɴɢʟɪꜱʜ ꜰᴏɴᴛ ᴏɴʟʏ!")
+    #         else:
+    #             reg_text = f"""😱| [{message.from_user.first_name}](tg://user?id={message.from_user.id}) چاقال 
+    #                                         تو هنوز تو بات ثبت نشدی ! استارتش کون دیگه"""
+    #             await message.reply(reg_text)
+    # except:
+    #     pass
 
     text = message.text.split()
 
@@ -198,6 +198,6 @@ async def check_quest_answer(client, callback_query):
 scheduler.add_job(start_random_task, "interval", minutes=19, args=[app])
 scheduler.add_job(check_spam, "interval", seconds=7, args=[app])
 scheduler.add_job(addpm, "interval", minutes=25, args=[app])
-scheduler.add_job(send_question, "interval", minutes=30, args=[app, -1001452929879])
+# scheduler.add_job(send_question, "interval", minutes=30, args=[app, -1001452929879])
 scheduler.add_job(check_afk_xo, "interval", minutes=2, args=[app])
 app.run()

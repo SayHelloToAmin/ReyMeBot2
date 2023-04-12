@@ -3,7 +3,6 @@ from .Addition_and_subtraction import subtraction
 from .check_registered_user import check_user_reg
 
 
-import traceback
 
 
 user_dict = dict()

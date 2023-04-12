@@ -6,9 +6,9 @@ from datetime import datetime
 # Connect to MySQL Server :
 db = mysql.connector.connect(
     host='localhost',
-    user="farhadb1_farhadb1",
-    password="KhodeAminHastam",
-    database="farhadb1_Reyme",
+    user="root",
+    password="amin1400",
+    database="reymebot",
     # auth_plugin='mysql_native_password'
 
 )
@@ -345,3 +345,20 @@ def countchatgpt(userid):
     Cursor.execute(f"""UPDATE statuss 
 SET chatgpt = chatgpt + 1 WHERE USERID = {userid}""")
     db.commit()
+
+
+#========================================================Record XO result=============================================
+
+#this function just record the result of XO games for each player
+
+def recxo(userid1,userid2,wonmoney):
+    # userid1 === > is that player who is the winner
+    # userid2 === > is that player who is the loser
+    #wonmoney === > that money the player1 won
+    try:
+        Cursor.execute("INSERT INTO xo_games (winner,loser,wonmoney) VALUES (%s,%s,%s)",(userid1,userid2,wonmoney))
+        db.commit()
+    except:
+        Cursor.execute("""update xo_games
+        set much = much +1 , wonmoney = wonmoney + %s where winner = %s and loser = %s""",(wonmoney,userid1,userid2))
+        db.commit()
