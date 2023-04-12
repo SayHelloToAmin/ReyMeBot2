@@ -41,14 +41,14 @@ async def create_verify_xo_keyboard(score: int, user_id: int, user_first_name: s
 
 
 async def xo_verify(client: Client, message: Message, text):
-    user_id = message.from_user.id
-    user_score = give_score(user_id)
     try:
         score = int(text[1])
     except Exception as e:
         pass
         score = False
     if score:
+        user_id = message.from_user.id
+        user_score = give_score(user_id)
         if user_score > score:
             user_first_name = message.from_user.first_name
             markup = await create_verify_xo_keyboard(score, user_id, user_first_name)
