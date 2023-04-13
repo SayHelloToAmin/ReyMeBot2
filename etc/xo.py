@@ -31,6 +31,7 @@ async def create_winner_board(board: list, win_coordinate: list):
                               callback_data='None') for index_columon, columon in enumerate(row)] for index_row, row in
         enumerate(board)
     ])
+    reply_markup.append([InlineKeyboardButton(text='text', url='url')])
     return reply_markup
 
 

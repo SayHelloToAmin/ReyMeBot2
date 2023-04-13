@@ -19,7 +19,7 @@ from Do.panel_system import *
 from Show.lotterystatus import lstatus
 from Show.toppm import TopPm
 from Show.help import *
-from Do.xo import *
+from etc.xo import *
 
 import re
 # Pyrogram Config :
