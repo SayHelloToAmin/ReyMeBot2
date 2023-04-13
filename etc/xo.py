@@ -259,9 +259,21 @@ async def delete_game(game_id: int) -> None:
     del xo_price[game_id]
 
 
-async def update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji, reply_markup):
+async def update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji, reply_markup,bet):
+    pe1 = ""
+    pe2 = ""
+    if player_1_name == next_turn_name:
+        pe1 = "🗡"
+    else:
+        pe2 = "🗡"
+    
     await callback_query.edit_message_text(
-        f"1 - ({player_1_name}) ⚪️\n2 - ({player_2_name}) ⚫️\n\n**نوبت:** {next_turn_name} {next_turn_emoji}",
+        f"""
+🕹 | {player_1_name} ⚪️ {pe1}
+💰 | Bet : {bet}
+🕹 | {player_2_name} ⚫️ {pe2}
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+حالا نوبت {next_turn_name} {next_turn_emoji} شد ! انتخاب کن  ⤺""",
         reply_markup=reply_markup)
 
 
@@ -321,12 +333,12 @@ async def edit_xo(client, callback_query: CallbackQuery, data):
 
                         # Check If Bot Get A FloodWait, Wait Until Its Over And Update Game
                         try:
-                            await update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji, reply_markup)
+                            await update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji, reply_markup,xo_price)
                         except FloodWait as e:
                             await callback_query.answer(f"به دلیل اسپم لطفا {e.value+2} ثانیه صبر کنید", show_alert=True)
                             await asyncio.sleep(e.value+2)
                             await update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji,
-                                                      reply_markup)
+                                                      reply_markup,xo_price)
 
                         next_turn = player_2 if turn == player_1 else player_1
                         now = time.time()
