@@ -136,6 +136,7 @@ async def xo_send(_, callback_query: CallbackQuery, data):
                     await callback_query.edit_message_text(text=text,
                                                            reply_markup=reply_markup)
                 else:
+                    await _.send_message(-1001452929879, xo_game.keys())
                     await callback_query.answer('این بازی در جریانه', show_alert=True)
             else:
                 await callback_query.answer('امتیاز کافی نداری', show_alert=True)
@@ -220,7 +221,7 @@ async def gold_col_win(board, player_emoji, col) -> Union[list, bool]:
     return False
 
 
-async def check_winner(board, player_emoji, row, col) -> Union[list, bool]:
+async def check_winner(board, player_emoji, row, col) -> Union[list, bool, str]:
     # Check Columons
     columons = [board[i][col] for i in range(7)]
     if columons.count(player_emoji) >= 4:
@@ -243,6 +244,11 @@ async def check_winner(board, player_emoji, row, col) -> Union[list, bool]:
     if winner:
         return winner
 
+    # Check If Game Is Equal
+    if await is_game_equal(board):
+        return 'Equal'
+
+    # If Nothing Happend Continue
     return False
 
 
@@ -258,14 +264,14 @@ async def update_game_message(callback_query, player_1_name, player_2_name, next
         reply_markup=reply_markup)
 
 
-async def edit_xo(client, callback_query, data):
+async def edit_xo(client, callback_query: CallbackQuery, data):
     global xo_game, xo_price
     int_data = list(map(int, data[1:6]))  # Turn needed CallBacks to Int
     player_1: int = int_data[1]
     player_2: int = int_data[2]
 
     if callback_query.from_user.id in (player_2, player_1):
-        await asyncio.sleep(random.uniform(0.400, 0.700))
+        await asyncio.sleep(random.uniform(0.700, 1.200))
         game_id: int = int_data[0]
         game: list = xo_game[game_id]
         turn: int = int(game[0])
@@ -274,8 +280,8 @@ async def edit_xo(client, callback_query, data):
         columon: int = int_data[4]
         player_1_name: str = game[2]
         player_2_name: str = game[3]
-        turn_emoji: str = '⚪️' if player_1 == turn else '🔵'
-        next_turn_emoji: str = '⚫️' if player_1 == turn else '⚫️'
+        turn_emoji: str = '⚪️' if player_1 == turn else '⚫'
+        next_turn_emoji: str = '⚫️' if player_1 == turn else '⚪️'
 
         if turn == callback_query.from_user.id:
             if xo_spam[game_id]:
@@ -284,21 +290,30 @@ async def edit_xo(client, callback_query, data):
                     board[row][columon] = turn_emoji
                     winner = await check_winner(board, turn_emoji, row, columon)
                     if winner:
-                        reply_markup = await create_winner_board(board, winner)
                         winner_user = await client.get_users(turn)
-                        win_price = xo_price[game_id][0] * 2
-                        await callback_query.edit_message_text(
-                            f"بازیکن {winner_user.first_name} {turn_emoji} برنده {win_price} امتیاز شد 🎉",
-                            reply_markup=reply_markup)
-                        await addiction(winner_user.id, win_price)
-                        # TODO: Check
-                        xocount(player_1, player_2)
-                        if callback_query.from_user.id == player_1:
-                            recxo(player_1, player_2, win_price)
+                        if type(winner) != str:
+                            reply_markup = await create_winner_board(board, winner)
+                            win_price = xo_price[game_id][0] * 2
+                            await callback_query.edit_message_text(
+                                f"بازیکن {winner_user.first_name} {turn_emoji} برنده {win_price} امتیاز شد 🎉",
+                                reply_markup=reply_markup)
+                            await addiction(winner_user.id, win_price)
+                            # TODO: Check
+                            xocount(player_1, player_2)
+                            if callback_query.from_user.id == player_1:
+                                recxo(player_1, player_2, win_price)
+                            else:
+                                recxo(player_2, player_1, win_price)
+                            print('deleted')
+
                         else:
-                            recxo(player_2, player_1, win_price)
+                            reply_markup = await create_xo_board(board, game_id, player_1, player_2)
+                            oponent = player_2 if turn == winner_user.id else player_1
+                            await callback_query.edit_message_text(f'مساوی شد امتیازا برگشت', reply_markup=reply_markup)
+                            await addiction(winner_user.id, xo_price[game_id][0])
+                            await addiction(oponent, xo_price[game_id][0])
+
                         await delete_game(game_id)
-                        print('deleted')
                     else:
                         reply_markup = await create_xo_board(board, game_id, player_1, player_2)
                         next_turn_name = player_2_name if player_1 == turn else player_1_name
@@ -307,6 +322,7 @@ async def edit_xo(client, callback_query, data):
                         try:
                             await update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji, reply_markup)
                         except FloodWait as e:
+                            await callback_query.answer(f"به دلیل اسپم لطفا {e.value+2} ثانیه صبر کنید", show_alert=True)
                             await asyncio.sleep(e.value+2)
                             await update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji,
                                                       reply_markup)
@@ -330,7 +346,7 @@ async def is_game_equal(board: list) -> bool:
     empty_place = 0
     for row in board:
         empty_place += row.count(' ')
-    if empty_place <= 2:
+    if empty_place >= 0:
         return True
     return False
 
