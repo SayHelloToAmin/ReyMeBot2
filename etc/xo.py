@@ -26,12 +26,14 @@ async def create_xo_board(board: list, game_id: int, player_1, player_2):
 
 
 async def create_winner_board(board: list, win_coordinate: list):
-    reply_markup = InlineKeyboardMarkup([
-        [InlineKeyboardButton(text='🟡' if (index_row, index_columon) in win_coordinate else columon,
-                              callback_data='None') for index_columon, columon in enumerate(row)] for index_row, row in
-        enumerate(board)
-    ])
-    reply_markup.append([InlineKeyboardButton(text='text', url='url')])
+    inline_buttons = [[InlineKeyboardButton(text='🟡' if (index_row, index_columon) in win_coordinate else columon,
+                                            callback_data='None') for index_columon, columon in enumerate(row)] for
+                      index_row, row in
+                      enumerate(board)]
+    inline_buttons.append([InlineKeyboardButton(text='text', url='windscribe.com')])
+    reply_markup = InlineKeyboardMarkup(
+        inline_buttons
+    )
     return reply_markup
 
 
@@ -259,14 +261,15 @@ async def delete_game(game_id: int) -> None:
     del xo_price[game_id]
 
 
-async def update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji, reply_markup,bet):
+async def update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji,
+                              reply_markup, bet):
     pe1 = ""
     pe2 = ""
     if player_1_name == next_turn_name:
         pe1 = "🗡"
     else:
         pe2 = "🗡"
-    
+
     await callback_query.edit_message_text(
         f"""
 🕹 | {player_1_name} ⚪️ {pe1}
@@ -333,12 +336,15 @@ async def edit_xo(client, callback_query: CallbackQuery, data):
 
                         # Check If Bot Get A FloodWait, Wait Until Its Over And Update Game
                         try:
-                            await update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji, reply_markup,xo_price)
+                            await update_game_message(callback_query, player_1_name, player_2_name, next_turn_name,
+                                                      next_turn_emoji, reply_markup, xo_price[game_id][0]*2)
                         except FloodWait as e:
-                            await callback_query.answer(f"به دلیل اسپم لطفا {e.value+2} ثانیه صبر کنید", show_alert=True)
-                            await asyncio.sleep(e.value+2)
-                            await update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji,
-                                                      reply_markup,xo_price)
+                            await callback_query.answer(f"به دلیل اسپم لطفا {e.value + 2} ثانیه صبر کنید",
+                                                        show_alert=True)
+                            await asyncio.sleep(e.value + 2)
+                            await update_game_message(callback_query, player_1_name, player_2_name, next_turn_name,
+                                                      next_turn_emoji,
+                                                      reply_markup, xo_price)
 
                         next_turn = player_2 if turn == player_1 else player_1
                         now = time.time()
@@ -377,13 +383,13 @@ async def check_afk_xo(client: Client) -> None:
             winner = price[2] if price[1] == turn else price[1]
             winner = await client.get_users(winner)
             is_equal = await is_game_equal(game[1])
-            xocount(winner.id,afk_player.id)
-            recxo(winner.id,afk_player.id,price[0]*2)
+            xocount(winner.id, afk_player.id)
+            recxo(winner.id, afk_player.id, price[0] * 2)
             if not is_equal:
                 await addiction(winner.id, price[0] * 2)
-                
+
                 await client.send_message(-1001452929879,
-                                          f"💤 | متاسفانه بازیکن {afk_player.first_name} به دلیل AFK از بازی خارج و {price[0]*2} امتیاز به {winner.first_name} رسید ! ")
+                                          f"💤 | متاسفانه بازیکن {afk_player.first_name} به دلیل AFK از بازی خارج و {price[0] * 2} امتیاز به {winner.first_name} رسید ! ")
             else:
                 # Give Scores Back If Game Is Equal
                 await addiction(winner.id, price[0])
