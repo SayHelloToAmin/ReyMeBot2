@@ -182,6 +182,7 @@ async def check_quest_answer(client, callback_query):
         'help': help_page,
         'xo_start': xo_send,
         'xo': edit_xo,
+        'xo_cancel': cancel_xo_request,
     }
     try:
         is_reg = CheckUserID(callback_query.from_user.id)
