@@ -391,7 +391,7 @@ group by winner""")
         Cloud = 0
         return Cloud
     else:
-        return Cloud
+        return Cloud[0]
 
 #loses
 async def xoloses(userid):
