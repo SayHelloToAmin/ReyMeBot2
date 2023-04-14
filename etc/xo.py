@@ -347,7 +347,7 @@ async def edit_xo(client, callback_query: CallbackQuery, data):
                                 f"""🎊 ¦ بازی تموم شد! 
 
 🕹 | {player_1_name} ⚪️ 
-💰 | Bet : {xo_price[game_id][0]}
+💰 | Bet : {xo_price[game_id][0] * 2}
 🕹 | {player_2_name} ⚫️ 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -438,12 +438,12 @@ async def check_afk_xo(client: Client) -> None:
             if not is_equal:
                 await addiction(winner.id, price[0] * 2)
 
-                await client.send_message(-1001452929879,
+                await client.send_message(-1001406922641,
                                           f"💤 | متاسفانه بازیکن {afk_player.first_name} به دلیل AFK از بازی خارج و {price[0] * 2} امتیاز به {winner.first_name} رسید ! ")
             else:
                 # Give Scores Back If Game Is Equal
                 await addiction(winner.id, price[0])
                 await addiction(afk_player.id, price[0])
 
-            await client.delete_messages(-1001452929879, gid)
+            await client.delete_messages(-1001406922641, gid)
             await delete_game(gid)
