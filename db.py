@@ -402,7 +402,7 @@ group by winner""")
         Cloud = 0
         return Cloud
     else:
-        return Cloud
+        return Cloud[0]
 
 
 #=================================================show winRate(xo) =======================================
