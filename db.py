@@ -387,14 +387,22 @@ async def xowins(userid):
     Cursor.execute(f"""select sum(much) from xo_games where winner = {userid} 
 group by winner""")
     Cloud = Cursor.fetchone()
-    return Cloud[0]
+    if not Cloud:
+        Cloud = 0
+        return Cloud
+    else:
+        return Cloud
 
 #loses
 async def xoloses(userid):
     Cursor.execute(f"""select sum(much) from xo_games where loser = {userid} 
 group by winner""")
     Cloud = Cursor.fetchone()
-    return Cloud[0]
+    if not Cloud:
+        Cloud = 0
+        return Cloud
+    else:
+        return Cloud
 
 
 #=================================================show winRate(xo) =======================================
