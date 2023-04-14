@@ -411,13 +411,10 @@ async def xo_winrate(userid):
     
 #============================================this part is all about Show.xo_history===========================
 
-def getname(*userid):
+def getname(userid):
     Cursor.execute("select usernames from statuss where userid = %s or USERID = %s",(userid[0],userid[1]))
-    Cloud = Cursor.fetchall()
-    Cloud2 = []
-    for num in Cloud:
-        Cloud2.append(num[0])
-    return Cloud2
+    Cloud = Cursor.fetchone()
+    return Cloud[0]
 
 
 def xowinnertimes(userid1,userid2):

@@ -7,18 +7,11 @@ async def xo_history(Client,Message,text):
     text2 = text[1].split("-")
     user_1 = text2[1]
     user_2 = text2[2]
-    names =getname(text2[1],text2[2])
-    user_1_name = names[1]
-    user_2_name = names[0]
-    print(user_1)
-    print(user_2)
-    print(user_1_name)
-    print(user_2_name)
+    user_1_name = getname(user_1)
+    user_2_name = getname(user_2)
 
     user1w = xowinnertimes(user_1,user_2)
     user2w = xowinnertimes(user_2,user_1)
-    print(user1w)
-    print(user2w)
 
     if user1w and user2w:
         winrate1 = round(user1w/user2w,2)
