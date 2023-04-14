@@ -3,7 +3,7 @@ from pyrogram.types import (Message, CallbackQuery, InlineKeyboardMarkup,
                             InlineKeyboardButton)
 from pyrogram.errors import FloodWait
 
-from db import give_score, recxo, xo_winrate, xocount, xogames
+from db import give_score, recxo, xo_winrate, xocount, xogames , upname
 from etc.Addition_and_subtraction import subtraction, addiction
 
 import random
@@ -25,12 +25,12 @@ async def create_xo_board(board: list, game_id: int, player_1, player_2):
     return reply_markup
 
 
-async def create_winner_board(board: list, win_coordinate: list):
+async def create_winner_board(board: list, win_coordinate: list,pl1,pl2):
     inline_buttons = [[InlineKeyboardButton(text='🟡' if (index_row, index_columon) in win_coordinate else columon,
                                             callback_data='None') for index_columon, columon in enumerate(row)] for
                       index_row, row in
                       enumerate(board)]
-    inline_buttons.append([InlineKeyboardButton(text='text', url='windscribe.com')])
+    inline_buttons.append([InlineKeyboardButton(text='𝑴𝒐𝒓𝒆 𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒐𝒏', url=f'https://t.me/reymebot?start=xo_his-{pl1}-{pl2}')])
     reply_markup = InlineKeyboardMarkup(
         inline_buttons
     )
@@ -54,6 +54,8 @@ async def is_game_max() -> bool:
 async def xo_verify(client: Client, message: Message, text):
     user_id = message.from_user.id
     user_score = give_score(user_id)
+    upname(user_id,message.from_user.first_name)
+    
 
     try:
         if text[1] == '*':
@@ -74,7 +76,9 @@ async def xo_verify(client: Client, message: Message, text):
                 games = await xogames(user_id)
                 await client.send_message(message.chat.id,
                                           f"""🎮 | یک درخواست بازی با شرط {score} امتیاز توسط {user_first_name} ارسال شده است !
-    📊 | تعداد بازی های {user_first_name} : {games} 
+🧨 | توجه : این درخواست فقط 5 دقیقه از زمان ارسال اعتبار دارد ! 
+
+    📊 | تعداد بازی های {user_first_name} تاکنون : {games} 
     📈 | درصد برد : %{winr}
     ┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
     برای قبول درخواست و ورود به بازی کلیک کنید⤺""", reply_markup=markup)
@@ -262,7 +266,7 @@ async def delete_game(game_id: int) -> None:
 
 
 async def update_game_message(callback_query, player_1_name, player_2_name, next_turn_name, next_turn_emoji,
-                              reply_markup, bet):
+                              reply_markup, bet,userid1,userid2):
     pe1 = ""
     pe2 = ""
     if player_1_name == next_turn_name:
@@ -272,11 +276,11 @@ async def update_game_message(callback_query, player_1_name, player_2_name, next
 
     await callback_query.edit_message_text(
         f"""
-🕹 | {player_1_name} ⚪️ {pe1}
+🕹 | [{player_1_name}](tg://user?id={userid1}) ⚪️ {pe1}
 💰 | Bet : {bet}
-🕹 | {player_2_name} ⚫️ {pe2}
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-حالا نوبت {next_turn_name} {next_turn_emoji} شد ! انتخاب کن  ⤺""",
+🕹 | [{player_2_name}](tg://user?id={userid2}) ⚫️ {pe2}
+- - - - - - - - - - - - - - - - - - - - - - - - -
+حالا نوبت {next_turn_name} {next_turn_emoji} شد ! انتخاب کن <-فقط دو دقیقه وقت داری ⏱->  ⤺""",
         reply_markup=reply_markup)
 
 
@@ -308,10 +312,17 @@ async def edit_xo(client, callback_query: CallbackQuery, data):
                     if winner:
                         winner_user = await client.get_users(turn)
                         if type(winner) != str:
-                            reply_markup = await create_winner_board(board, winner)
+                            reply_markup = await create_winner_board(board, winner,player_1,player_2)
                             win_price = xo_price[game_id][0] * 2
                             await callback_query.edit_message_text(
-                                f"بازیکن {winner_user.first_name} {turn_emoji} برنده {win_price} امتیاز شد 🎉",
+                                f"""🎊 ¦ بازی تموم شد! 
+
+🕹 | {player_1_name} ⚪️ 
+💰 | Bet : {xo_price[game_id][0]}
+🕹 | {player_2_name} ⚫️ 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+🏆 | پلیر {winner_user.first_name} بازیو برد و {xo_price[game_id][0]*2} امتیاز رو با خودش به خونه برد!""",
                                 reply_markup=reply_markup)
                             await addiction(winner_user.id, win_price)
                             # TODO: Check
@@ -325,7 +336,15 @@ async def edit_xo(client, callback_query: CallbackQuery, data):
                         else:
                             reply_markup = await create_xo_board(board, game_id, player_1, player_2)
                             oponent = player_2 if turn == winner_user.id else player_1
-                            await callback_query.edit_message_text(f'مساوی شد امتیازا برگشت', reply_markup=reply_markup)
+                            await callback_query.edit_message_text(f"""🎊 ¦ بازی تموم شد! 
+
+🕹 | {player_1_name} ⚪️ 
+💰 | Bet : {xo_price[game_id][0]}
+🕹 | {player_2_name} ⚫️ 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+🙅🏿‍♂️ | به دلیل مساوی شدن هیچکس امتیاز نمیگیره !""", reply_markup=reply_markup)
+                            xocount(player_1,player_2)
                             await addiction(winner_user.id, xo_price[game_id][0])
                             await addiction(oponent, xo_price[game_id][0])
 
@@ -337,14 +356,14 @@ async def edit_xo(client, callback_query: CallbackQuery, data):
                         # Check If Bot Get A FloodWait, Wait Until Its Over And Update Game
                         try:
                             await update_game_message(callback_query, player_1_name, player_2_name, next_turn_name,
-                                                      next_turn_emoji, reply_markup, xo_price[game_id][0]*2)
+                                                      next_turn_emoji, reply_markup, xo_price[game_id][0],player_1,player_2)
                         except FloodWait as e:
                             await callback_query.answer(f"به دلیل اسپم لطفا {e.value + 2} ثانیه صبر کنید",
                                                         show_alert=True)
                             await asyncio.sleep(e.value + 2)
                             await update_game_message(callback_query, player_1_name, player_2_name, next_turn_name,
                                                       next_turn_emoji,
-                                                      reply_markup, xo_price)
+                                                      reply_markup, xo_price[game_id][0],player_1,player_2)
 
                         next_turn = player_2 if turn == player_1 else player_1
                         now = time.time()
@@ -353,9 +372,9 @@ async def edit_xo(client, callback_query: CallbackQuery, data):
                 else:
                     await callback_query.answer("این خونه از قبل انتخاب شده", show_alert=True)
             else:
-                await callback_query.answer('صبر کن تا درخواست قبلیت انجام شه !', show_alert=True)
+                await callback_query.answer('صبر کن تا درخواست قبلیت انجام شه ❕❗️', show_alert=True)
         else:
-            await callback_query.answer('هنوز نوبت تو نشده ‼️', show_alert=True)
+            await callback_query.answer('هنوز نوبت تو نشده ❕❗️', show_alert=True)
 
     else:
         await callback_query.answer('تو فقط یه تماشاچی ای ❕❗️', show_alert=True)

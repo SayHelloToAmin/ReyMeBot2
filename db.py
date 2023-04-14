@@ -406,3 +406,38 @@ async def xo_winrate(userid):
     if Cloud1:
         Cloud2 = await xowins(userid)
         return round((Cloud2/Cloud1)* 100)
+    
+    
+    
+#============================================this part is all about Show.xo_history===========================
+
+def getname(*userid):
+    Cursor.execute("select usernames from statuss where userid = %s or USERID = %s",(userid[0],userid[1]))
+    Cloud = Cursor.fetchall()
+    Cloud2 = []
+    for num in Cloud:
+        Cloud2.append(num[0])
+    return Cloud2
+
+
+def xowinnertimes(userid1,userid2):
+    #userid1 = winner
+    #userid2 = loser
+    Cursor.execute("select much from xo_games where winner = %s and loser = %s",(userid1,userid2))
+    Cloud = Cursor.fetchone()
+    if not Cloud:
+        Cloud = 0
+    else:
+        return Cloud[0]
+    
+    return Cloud
+
+def xomoneywon(userid1,userid2):
+    #userid1 = winner
+    #userid2 = loser
+    Cursor.execute("select wonmoney from xo_games where winner = %s and loser = %s",(userid1,userid2))
+    Cloud = Cursor.fetchone()
+    if not Cloud:
+        Cloud = 0
+    else:
+        return Cloud[0]

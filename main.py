@@ -20,7 +20,7 @@ from Show.lotterystatus import lstatus
 from Show.toppm import TopPm
 from Show.help import *
 from etc.xo import *
-
+from Show.xo_history import xo_history
 import re
 # Pyrogram Config :
 
@@ -129,7 +129,8 @@ privatecom = {
 }
 
 privatecom2 = {
-    "help": send_help
+    "help": send_help,
+    "xo_his" : xo_history
 
 }
 
@@ -145,10 +146,11 @@ async def private_message(client, message):
             await second_start(client, message)
         else:
             if CheckUserID(message.from_user.id):
+                text2 = text[1].split("-")
                 # all of start ==> commands will be here
                 # -----------------------------------------------------------------------------------------------------
-                if text[1] in privatecom2:
-                    await privatecom2[text[1]](client, message, text)
+                if text2[0] in privatecom2:
+                    await privatecom2[text2[0]](client, message, text)
 
             # --------------------------------------------------------------------------------------------------------
             else:
