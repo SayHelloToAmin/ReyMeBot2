@@ -412,7 +412,7 @@ async def xo_winrate(userid):
 #============================================this part is all about Show.xo_history===========================
 
 def getname(userid):
-    Cursor.execute("select usernames from statuss where userid = %s or USERID = %s",(userid[0],userid[1]))
+    Cursor.execute(f"select usernames from statuss where userid = {userid}")
     Cloud = Cursor.fetchone()
     return Cloud[0]
 
